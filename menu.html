@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menü</title>
+    <link rel="stylesheet" href="restaurant.css">
+</head>
+<body>
+    <!-- Üst Menü -->
+    <div class="header">
+        <a href="#default" class="logo">Restaurant Logo</a>
+        <div class="header-right">
+            <a class="active" href="#home">Anasayfa</a>
+            <a href="#menu">Menü</a>
+            <a href="#contact">İletişim</a>
+        </div>
+    </div>
+
+    <!-- Menü İçeriği -->
+    <div class="menu-container">
+        <?php foreach ($menu_items as $item): ?>
+        <div class="menu-item">
+            <img src="menu-img/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="menu-img">
+            <div class="item-info">
+                <h3 class="item-name"><?php echo $item['name']; ?></h3>
+                <p class="item-description"><?php echo $item['description']; ?></p>
+                <p class="item-price"><?php echo $item['price']; ?> TL</p>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</body>
+</html>
