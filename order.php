@@ -1,3 +1,4 @@
+// Order Page Tasarım aşamasındadır.
 <?php
 include 'db_connect.php'; // Veritabanı bağlantısını dahil et
 
