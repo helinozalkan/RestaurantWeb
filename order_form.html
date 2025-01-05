@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş Formu</title>
+</head>
+<body>
+    <h1>Sipariş Formu</h1>
+    <form action="create_txt.php" method="POST">
+        <label for="dish_name">Ürün Adı:</label><br>
+        <input type="text" id="dish_name" name="dish_name" required><br><br>
+
+        <label for="quantity">Adet:</label><br>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+        <label for="total_price">Toplam Fiyat (TL):</label><br>
+        <input type="text" id="total_price" name="total_price" required><br><br>
+
+        <label for="created_at">Sipariş Tarihi:</label><br>
+        <input type="datetime-local" id="created_at" name="created_at"><br><br>
+
+        <button type="submit">Siparişi Kaydet</button>
+    </form>
+</body>
+</html>

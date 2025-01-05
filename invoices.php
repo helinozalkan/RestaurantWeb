@@ -3,13 +3,16 @@
 include 'db_connect.php';  
 
 // SQL sorgusunu yaz
-$query = "SELECT o.order_id, o.customer_id, o.total_price, o.status, o.created_at, 
-                 od.menu_id, od.quantity, od.price 
+$query = "SELECT m.dish_name, od.quantity, o.total_price, o.status, o.created_at
           FROM orders o
-          JOIN order_details od ON o.order_id = od.order_id";
+          JOIN order_details od ON o.order_id = od.order_id
+          JOIN menu m ON od.menu_id = m.menu_id";
 
 // Veritabanından fatura verilerini al
 $result = mysqli_query($conn, $query);
+
+// Toplam tutar değişkeni
+$totalAmount = 0;
 ?>
 
 <!DOCTYPE html>
@@ -101,7 +104,60 @@ $result = mysqli_query($conn, $query);
         table td a:hover {
             text-decoration: underline;
         }
+
+        /* Ok Butonu */
+        .arrow-button {
+            background-image: url('menu-img/download.png');
+            background-size: cover;
+            width: 20px;
+            height: 20px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .arrow-button:hover {
+            transform: scale(1.2);
+        }
+
+        /* Toplam Tutar Alanı */
+        .total-amount {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: right;
+        }
     </style>
+    <script>
+ function createTxtFile(dish_name, quantity, total_price, created_at) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "create_txt.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    // Veriyi PHP'ye gönderiyoruz
+    xhr.send("dish_name=" + encodeURIComponent(dish_name) + 
+             "&quantity=" + encodeURIComponent(quantity) + 
+             "&total_price=" + encodeURIComponent(total_price) + 
+             "&created_at=" + encodeURIComponent(created_at));
+
+    xhr.onload = function() {
+        if (xhr.status == 200) {
+            var response = xhr.responseText.trim();
+            if (response !== "ERROR") {
+                window.location.href = 'download.php?file=' + response;
+            } else {
+                alert("Dosya oluşturulamadı. Lütfen tekrar deneyin.");
+            }
+        } else {
+            alert("Bir hata oluştu.");
+        }
+    };
+}
+
+
+    </script>
 </head>
 <body>
     <!-- Geri Dön Butonu -->
@@ -116,27 +172,35 @@ $result = mysqli_query($conn, $query);
             <table>
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Customer ID</th>
-                        <th>Total Price</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Details</th>
+                        <th>Ürün Adı</th>
+                        <th>Adet</th>
+                        <th>Toplam Fiyat</th>
+                        <th>Sipariş Tarihi</th>
+                        <th>Doküman</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                         <tr>
-                            <td><?= $row['order_id'] ?></td>
-                            <td><?= $row['customer_id'] ?></td>
+                            <td><?= $row['dish_name'] ?></td>
+                            <td><?= $row['quantity'] ?></td>
                             <td><?= $row['total_price'] ?></td>
-                            <td><?= $row['status'] ?></td>
                             <td><?= $row['created_at'] ?></td>
-                            <td><a href="invoice_details.php?order_id=<?= $row['order_id'] ?>">View Details</a></td>
+                            <td>
+                                <!-- Ok butonu, onclick ile JavaScript fonksiyonunu çağırıyoruz -->
+                                <button class="arrow-button" onclick="createTxtFile('<?= $row['dish_name'] ?>', '<?= $row['quantity'] ?>', '<?= $row['total_price'] ?>', '<?= $row['created_at'] ?>')" title="Aşağı Yönlü Ok"></button>
+                            </td>
                         </tr>
+                        <?php $totalAmount += $row['total_price']; ?> <!-- Toplam tutarı güncelle -->
                     <?php endwhile; ?>
                 </tbody>
             </table>
+
+            <!-- Toplam Tutar Alanı -->
+            <div class="total-amount">
+                <p>Toplam Tutar: <?= $totalAmount ?> TL</p>
+            </div>
+
         <?php else: ?>
             <p>Hiç fatura bulunamadı.</p>
         <?php endif; ?>
