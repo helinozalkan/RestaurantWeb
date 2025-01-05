@@ -12,19 +12,20 @@ body {
     justify-content: space-between;
     align-items: center;
     background-color: #ff0000;
-    padding: 10px 20px;
+    padding: 8px 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;  /* Menü genişliğini tam yapalım */
+    height:60px;
+    margin-bottom: 40px; /* Menü ve sidebar arasına boşluk ekliyoruz */
 }
-
 .logo-area {
     display: flex;
     align-items: center;
-
+    border-radius: 100%;
 }
-
 .logo-area .logo {
     width: 50px;
     height: 50px;
@@ -33,7 +34,7 @@ body {
 }
 
 .logo-area h1 {
-    font-size: 24px;
+    font-size: 20px;  /* Font boyutunu küçülttük */
     margin: 0;
     color: #fff;
 }
@@ -46,12 +47,12 @@ body {
 
 .search-input {
     width: 60%;
-    max-width: 400px;
-    padding: 10px;
+    max-width: 300px;  /* Daha küçük arama kutusu */
+    padding: 8px;  /* Daha küçük padding */
     border: 1px solid #ddd;
     border-radius: 20px;
     outline: none;
-    font-size: 16px;
+    font-size: 14px;  /* Daha küçük yazı tipi */
     transition: border 0.3s ease;
 }
 
@@ -67,6 +68,7 @@ body {
 .profile-img {
     width: 40px;
     height: 40px;
+    margin-left: -150%;
     border-radius: 50%;
     cursor: pointer;
     border: 2px solid #ddd;
@@ -77,75 +79,15 @@ body {
     border-color: #333;
 }
 
-/* Menü Tasarımı */
-.menu-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-}
-
-.menu-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.menu-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.menu-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 2px solid #ddd;
-}
-
-.item-info {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.item-name {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0;
-    color: #333;
-}
-
-.item-description {
-    font-size: 14px;
-    color: #666;
-    margin: 0;
-}
-
-.item-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #e74c3c;
-    margin: 0;
-}
-
 /* Sidebar Tasarımı */
 .sidebar {
     position: fixed;
-    top: 0;
+    top: 60px; /* Sidebar'ı üst menüye 60px aşağıya yerleştiriyoruz */
     left: 0;
     width: 250px;
     height: 100%;
     background-color: #fff;
-    color: rgb(255, 0, 0);
+    color: #ff0000;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 999;
@@ -168,7 +110,7 @@ body {
 }
 
 .sidebar ul li a {
-    color: rgb(0, 0, 0);
+    color: #000;
     text-decoration: none;
     font-size: 18px;
     display: block;
@@ -178,32 +120,195 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #34495e;
+    background-color: #ddd;
 }
 
-/* Menü İçeriği ve Sidebar'ın Uyumu */
+/* Menü Tasarımı */
 .menu-container {
-    margin-left: 250px; /* Sidebar'ın genişliğine göre ayarlama */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px;
-    justify-content: center;
+    margin-left: 270px; /* Sidebar genişliğiyle hizalanmış */
 }
 
 .menu-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .menu-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.menu-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #ddd;
+}
+
+.item-info {
+    padding: 15px;
+}
+
+.item-info h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.item-info p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.item-info strong {
+    font-size: 16px;
+    color: #e74c3c;
+}
+
+/* Genel Ayar */
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar h2, .top-bar h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Sepet Alanı Tasarımı */
+.main-content {
+    display: flex;
+    margin-left: 270px;
+    gap: 20px;
+}
+
+.cart-container {
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.cart-container h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+#cart-items li {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+#complete-order {
+    width: 100%;
+    padding: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#complete-order:hover {
+    background-color: #c0392b;
+}
+
+/* Sepete Ekle Butonları */
+.add-to-cart {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background-color: #2ecc71;
+}
+
+/* Sepet Itemi - Artırma ve Azaltma Butonları */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cart-item button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item button:hover {
+    background-color: #2980b9;
+}
+
+.cart-item span {
+    font-size: 16px;
+    color: #333;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Sepet Gösterimi */
+.cart-container {
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.cart-container h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+#cart-items li {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
 }

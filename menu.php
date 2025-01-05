@@ -1,7 +1,12 @@
 <?php
-include 'db_connect.php'; // Veritabanı bağlantısını dahil et
+include 'db_connect.php'; // Veritabanı bağlantısı
 
-$sql = "SELECT menu_id, dish_name, description, price, image FROM Menu"; // Görsel alanını da ekledim
+$category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
+
+$sql = $category_id 
+    ? "SELECT menu_id, dish_name, description, price, image FROM Menu WHERE category_id = $category_id"
+    : "SELECT menu_id, dish_name, description, price, image FROM Menu";
+
 $result = $conn->query($sql);
 ?>
 
@@ -11,58 +16,134 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menü</title>
-    <link rel="stylesheet" href="restaurant.css">
+    <link rel="stylesheet" href="restaurant.css"> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Menü Kategorileri</h2>
-        <ul>
-            <li><a href="#">Burger</a></li>
-            <li><a href="#">Tatlı</a></li>
-            <li><a href="#">İçecek</a></li>
-            <li><a href="#">Atıştırmalık</a></li>
-        </ul>
-    </div>
-
     <!-- Üst Menü -->
     <div class="top-bar">
         <div class="logo-area">
-            <img src="menu-img/logo.jpg" alt="Restaurant Logo" class="logo">
-            <h1>Kumsal's Restaurant</h1>
+            <img src="menu-img/logo.jpg" alt="Logo" class="logo">
+            <h1>Mrs. Kumsal's House</h1>
         </div>
         <div class="search-area">
-            <input type="text" placeholder="Search dishes..." class="search-input">
+            <input type="text" placeholder="Yemek ara..." class="search-input">
         </div>
         <div class="profile-area">
-            <img src="menu-img/profile.png" alt="Profile" class="profile-img">
+            <img src="menu-img/profile.png" alt="Profil" class="profile-img">
         </div>
     </div>
 
-    <!-- Menü İçeriği -->
-    <div class="menu-container">
-        <?php
-        if ($result->num_rows > 0) {
-            // Menü öğelerini listele
-            while($row = $result->fetch_assoc()) {
-                echo "<div class='menu-item'>";
-                echo "<img src='menu-img/" . $row['image'] . "' alt='" . $row['dish_name'] . "' class='menu-img'>";
-                echo "<div class='item-info'>";
-                echo "<h3>" . $row['dish_name'] . "</h3>";
-                echo "<p>" . $row['description'] . "</p>";
-                echo "<p><strong>Fiyat:</strong> " . $row['price'] . " TL</p>";
-                echo "</div>";
-                echo "</div>";
-            }
-        } else {
-            echo "Menüde hiç yemek yok!";
-        }
-        ?>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Restaurant Menü</h2>
+        <ul>
+            <li><a href="menu.php">Tüm Ürünler</a></li>
+            <li><a href="menu.php?category=1">Burger</a></li>
+            <li><a href="menu.php?category=2">Tatlı</a></li>
+            <li><a href="menu.php?category=3">İçecek</a></li>
+            <li><a href="menu.php?category=4">Atıştırmalık</a></li>
+        </ul>
     </div>
+
+    <!-- Menü ve Sepet -->
+    <div class="main-content">
+        <div class="menu-container">
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="menu-item">
+                        <img src="menu-img/<?php echo $row['image']; ?>" alt="<?php echo $row['dish_name']; ?>" class="menu-img">
+                        <div class="item-info">
+                            <h3><?php echo $row['dish_name']; ?></h3>
+                            <p><?php echo $row['description']; ?></p>
+                            <p><strong>Fiyat:</strong> <?php echo $row['price']; ?> TL</p>
+                            <div class="cart-controls">
+                                <button class="decrease">−</button>
+                                <span class="quantity">1</span>
+                                <button class="increase">+</button>
+                                <button class="add-to-cart" data-id="<?php echo $row['menu_id']; ?>" data-name="<?php echo $row['dish_name']; ?>" data-price="<?php echo $row['price']; ?>">Sepete Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>Bu kategoride henüz yemek bulunmamaktadır.</p>
+            <?php endif; ?>
+        </div>
+
+        <div class="cart-container">
+            <h2>Sepetiniz</h2>
+            <ul id="cart-items"></ul>
+            <p><strong>Toplam Fiyat:</strong> <span id="total-price">0</span> TL</p>
+            <button id="complete-order">Siparişi Tamamla</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        $(document).ready(function () {
+            $('.increase').click(function () {
+                const quantityElement = $(this).siblings('.quantity');
+                let quantity = parseInt(quantityElement.text());
+                quantityElement.text(++quantity);
+            });
+
+            $('.decrease').click(function () {
+                const quantityElement = $(this).siblings('.quantity');
+                let quantity = parseInt(quantityElement.text());
+                if (quantity > 1) quantityElement.text(--quantity);
+            });
+
+            $('.add-to-cart').click(function () {
+                const id = $(this).data('id');
+                const name = $(this).data('name');
+                const price = parseFloat($(this).data('price'));
+                const quantity = parseInt($(this).siblings('.quantity').text());
+
+                const item = cart.find(i => i.id === id);
+                if (item) {
+                    item.quantity += quantity;
+                } else {
+                    cart.push({ id, name, price, quantity });
+                }
+                updateCart();
+            });
+
+            function updateCart() {
+                let total = 0;
+                $('#cart-items').empty();
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    $('#cart-items').append(`<li>${item.name} x${item.quantity} - ${item.price * item.quantity} TL</li>`);
+                });
+                $('#total-price').text(total.toFixed(2));
+            }
+
+            $('#complete-order').click(function () {
+                if (cart.length === 0) {
+                    alert('Sepetiniz boş!');
+                    return;
+                }
+
+                $.ajax({
+                    url: 'complete_order.php',
+                    method: 'POST',
+                    data: { cart: JSON.stringify(cart) },
+                    success: function (response) {
+                        alert('Siparişiniz başarıyla kaydedildi!');
+                        cart = [];
+                        updateCart();
+                    },
+                    error: function () {
+                        alert('Sipariş sırasında bir hata oluştu.');
+                    }
+                });
+            });
+        });
+
+        
+    </script>
 </body>
-
 </html>
-
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>
