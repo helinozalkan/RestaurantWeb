@@ -35,16 +35,15 @@ body {
 
 /* Stok Tablosu */
 .stock-table-container {
-    margin: 0 auto; /* Ortala */
-    margin-top: 50px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .stock-table {
-    width: 100%;
-    max-width: 1200px; /* Tablo genişliği sınırı */
+    width: 60%;
+    max-width: 100px; /* Tablo genişliği sınırı */
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

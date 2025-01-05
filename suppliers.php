@@ -2,7 +2,7 @@
 include 'db_connect.php'; // Veritabanı bağlantısı
 
 // SQL sorgusu: Tedarikçi bilgilerini al
-$query = "SELECT supplier_id, name, contact_info FROM suppliers";
+$query = "SELECT name, service_area, contact_info FROM suppliers";
 $result = mysqli_query($conn, $query);
 
 ?>
@@ -27,26 +27,22 @@ $result = mysqli_query($conn, $query);
         <table>
             <thead>
                 <tr>
-                    <th>Supplier ID</th>
-                    <th>Name</th>
-                    <th>Contact Info</th>
-                    <th>Actions</th>
+                    <th>Sıra</th>
+                    <th>Tedarikçi Firma Adı</th>
+                    <th>Hizmet Alanı</th>
+                    <th>Bilgi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 if (mysqli_num_rows($result) > 0) {
-                    // Veritabanındaki her tedarikçi için satır ekle
+                    $sirano = 1; // Sıra sütunu için başlangıç değeri
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['supplier_id'] . "</td>";
-                        echo "<td>" . $row['name'] . "</td>";
-                        echo "<td>" . $row['contact_info'] . "</td>";
-                        echo "<td>
-                                <a href='edit_supplier.php?supplier_id=" . $row['supplier_id'] . "'>Düzenle</a> | 
-                                <a href='copy_supplier.php?supplier_id=" . $row['supplier_id'] . "'>Kopyala</a> | 
-                                <a href='delete_supplier.php?supplier_id=" . $row['supplier_id'] . "'>Sil</a>
-                              </td>";
+                        echo "<td>" . $sirano++ . "</td>"; // Sıra sütunu
+                        echo "<td>" . $row['name'] . "</td>"; // Firma Adı
+                        echo "<td>" . $row['service_area'] . "</td>"; // Hizmet Alanı
+                        echo "<td>" . $row['contact_info'] . "</td>"; // Bilgi
                         echo "</tr>";
                     }
                 } else {
