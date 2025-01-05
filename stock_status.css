@@ -1,0 +1,72 @@
+/* Genel Stil */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Geri Dön Butonu */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button a {
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button a:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+/* İçerik */
+.content {
+    text-align: center;
+}
+
+/* Stok Tablosu */
+.stock-table-container {
+    margin: 0 auto; /* Ortala */
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stock-table {
+    width: 100%;
+    max-width: 1200px; /* Tablo genişliği sınırı */
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stock-table th, .stock-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.stock-table th {
+    background-color: #333;
+    color: white;
+}
+
+.stock-table td {
+    background-color: #f9f9f9;
+}
+
+.stock-table tr:hover td {
+    background-color: #f1f1f1; /* Satır üzerine gelince arka plan rengini değiştir */
+}

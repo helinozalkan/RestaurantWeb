@@ -11,11 +11,13 @@ body {
 
 /* Üst Menü (Yatay olarak üstte) */
 .top-bar {
+    height: 70px;
+    padding: 10px 20px; /* padding'i birleştirip gereksiz tekrarları kaldırdım */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ff0000; /* Kırmızı tonu */
-    padding: 10px 20px;
+    justify-content: flex-start; /* Öğeleri sola hizalar */
+    align-items: center; /* Logo ve başlığı dikeyde ortalar */
+    gap: 10px; /* Logo ile başlık arasında boşluk */
+    background-color: #ff0000; /* Kırmızı tonu  */
     color: white;
     box-sizing: border-box;
     position: fixed; /* Sabit konumda üstte yerleştir */
@@ -25,28 +27,39 @@ body {
     z-index: 1000; /* Üst menüyü diğer öğelerin üstünde tutuyoruz */
 }
 
+
 .top-bar .logo-area {
     display: flex;
-    align-items: center;
-}
-
-.top-bar .logo {
-    width: 40px; /* Logo boyutunu ayarladım */
-    height: 40px; /* Logo boyutunu ayarladım */
-    margin-right: 10px;
+    align-items: center; /* Logo ve başlık aynı hizada olsun */
 }
 
 .top-bar h1 {
-    font-size: 20px;
+    font-size: 24px;
     margin: 0;
+    /* Başlık hizası, margin-left ve margin-top kaldırıldı */
 }
 
+/* Köpek logosu için*/
+.top-bar .logo {
+    width: 50px; /* Logo boyutunu ayarladım */
+    height: 50px; /* Logo boyutunu ayarladım */
+    display: flex;
+    margin-right: 10px;
+    border-radius: 50%; /* Kenarları tamamen oval yaptı */
+}
+
+
+
 .top-bar .search-area input {
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
+    width: 50%; /* Arama çubuğunun genişliği */
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 10px 10px; /* İç boşluk */
+    font-size: 16px; /* Yazı boyutunu artır */
+    border-radius: 20px; /* Oval kenarlar */
+    border: 1px solid #ccc; /* Kenarlık */
+    background-color: #f9f9f9; /* Arka plan rengi */
 }
 
 .top-bar .profile-area .profile-img {
@@ -184,7 +197,7 @@ footer {
 }
 
 .search-input {
-    width: 60%;
+    width: 100%;
     max-width: 400px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -237,3 +250,4 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
+ 
