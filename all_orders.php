@@ -27,11 +27,8 @@ $result = mysqli_query($conn, $query);
         </div>
 
         <!-- İçerik -->
-        <div class="content">
+        <div class="table-container">
             <h1>Sipariş Listesi</h1>
-            
-            <!-- Sipariş Tablosu -->
-            <div class="table-container">
                 <table>
                     <thead>
                         <tr>

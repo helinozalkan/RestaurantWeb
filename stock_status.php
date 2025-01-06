@@ -1,17 +1,10 @@
 <?php
-include 'db_connect.php'; // Veritabanı bağlantısı
+// Veritabanı bağlantısını dahil et
+include 'db_connect.php';
 
-// SQL sorgusu: Stok ve ingredient bilgilerini al
-$query = "
-    SELECT 
-        i.name AS ingredient_name, 
-        i.unit AS ingredient_unit, 
-        s.quantity 
-    FROM stock s
-    JOIN ingredients i ON s.ingredient_id = i.ingredient_id
-";
+// ingredients tablosundan verileri al
+$query = "SELECT name, unit, price_per_unit FROM ingredients";
 $result = mysqli_query($conn, $query);
-
 ?>
 
 <!DOCTYPE html>
@@ -20,55 +13,44 @@ $result = mysqli_query($conn, $query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stok Durumu</title>
-    <link rel="stylesheet" href="suppliers.css">
+    <link rel="stylesheet" href="stock_status.css">
 </head>
 <body>
-    <!-- Ana Düzen -->
-    <div class="container">
-        <div class="back-button">
-            <a href="javascript:history.back()">← Geri Dön</a>
-        </div>
-
-        <!-- İçerik -->
-        <div class="content">
-            <h1>Stok Durumu</h1>
-
-            <!-- Stok Tablosu -->
-            <div class="stock-table-container">
-                <table class="stock-table">
-                    <thead>
-                        <tr>
-                            <th>Sıra</th>
-                            <th>Malzeme Adı</th>
-                            <th>Birim</th>
-                            <th>Miktar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if (mysqli_num_rows($result) > 0) {
-                            $sira = 1; // Sıra numarası için başlangıç değeri
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<tr>";
-                                echo "<td>" . $sira++ . "</td>"; // Sıra numarasını yazdır ve artır
-                                echo "<td>" . $row['ingredient_name'] . "</td>";
-                                echo "<td>" . $row['ingredient_unit'] . "</td>";
-                                echo "<td>" . $row['quantity'] . "</td>";
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='4'>Hiç stok bilgisi bulunamadı.</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <!-- Geri Dön Butonu -->
+    <div class="back-button">
+        <a href="javascript:history.back()">← Geri Dön</a>
     </div>
+
+    <!-- Tablo Konteyner -->
+    <div class="table-container">
+        <h1>Stok Durumu</h1>
+        <?php if (mysqli_num_rows($result) > 0): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sıra</th>
+                        <th>Malzeme Adı</th>
+                        <th>Birim</th>
+                        <th>Miktar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $index = 1; ?>
+                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                        <tr>
+                            <td><?= $index++ ?></td>
+                            <td><?= htmlspecialchars($row['name']) ?></td>
+                            <td><?= htmlspecialchars($row['unit']) ?></td>
+                            <td><?= htmlspecialchars($row['price_per_unit']) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>Hiç stok bilgisi bulunamadı.</p>
+        <?php endif; ?>
+    </div>
+
+    <?php mysqli_close($conn); // Veritabanı bağlantısını kapat ?>
 </body>
 </html>
-
-<?php
-// Veritabanı bağlantısını kapat
-$conn->close();
-?>

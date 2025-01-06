@@ -6,8 +6,9 @@ body {
     background-color: #f4f4f4;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh; /* Ekran yüksekliğini kapla */
+    align-items: flex-start; /* Ortadan yukarı taşı */
+    padding-top: 30px; /* Yukarıdan boşluk bırak */
+    height: 100vh;
 }
 
 /* Geri Dön Butonu */
@@ -20,7 +21,7 @@ body {
 
 .back-button a {
     display: inline-block;
-    background-color: #333;
+    background-color: #bd1b1b; /* Kırmızı tonu  */
     color: white;
     text-decoration: none;
     padding: 12px 20px;
@@ -34,27 +35,32 @@ body {
     transform: scale(1.05);
 }
 
-/* Fatura Tablosu Konteyner */
-.invoice-container {
-    text-align: center;
+/* Tablo Konteyner */
+.table-container {
     width: 90%;
-    max-width: 1200px;
-    background-color: #fff;
+    max-width: 900px; /* Maksimum genişlik sınırını ayarladık */
+    background-color: white;
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     border-radius: 8px;
+    text-align: center;
+    margin-top: 50px; /* Yukarıdan mesafe bırak */
 }
 
 .invoice-container h1 {
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
+    padding-bottom: 10px; /* Başlık ile tablonun ayrılmasını sağladık */
+    border-bottom: 2px solid #ddd; /* Başlığı görsel olarak ayırmak için bir alt çizgi ekledik */
 }
 
 /* Tablo */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin: 20px 0;
 }
 
 table th, table td {

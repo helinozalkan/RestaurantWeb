@@ -58,7 +58,7 @@ body {
 .panel-button {
     padding: 60px; /* İçerik alanını büyüt */
     font-size: 24px; /* Yazı boyutunu büyüt */
-    background-color: #bd1b1b; /* Yeşil ton */
+    background-color: #bd1b1b; 
     color: white;
     border: none;
     border-radius: 8px; /* Oval kenarlar */

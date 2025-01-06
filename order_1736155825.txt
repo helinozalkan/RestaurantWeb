@@ -1,0 +1,5 @@
+Sipariş Bilgileri:
+Yemek Adı: Whopper
+Adet: 1
+Toplam Fiyat: 70.00
+Sipariş Tarihi: 2025-01-04 18:38:23

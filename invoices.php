@@ -156,7 +156,6 @@ $totalAmount = 0;
     };
 }
 
-
     </script>
 </head>
 <body>

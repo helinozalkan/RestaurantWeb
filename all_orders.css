@@ -4,6 +4,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Ortadan yukarı taşı */
+    padding-top: 30px; /* Yukarıdan boşluk bırak */
+    height: 100vh;
 }
 
 /* Geri Dön Butonu */
@@ -15,11 +20,12 @@ body {
 }
 
 .back-button a {
+    display: inline-block;
     background-color: #333;
     color: white;
     text-decoration: none;
-    padding: 12px 30px;
-    font-size: 18px;
+    padding: 12px 20px;
+    font-size: 16px;
     border-radius: 5px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -38,37 +44,59 @@ body {
 
 /* Sipariş Tablosu */
 .table-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+    text-align: center;
+    width: 80%;
+    max-width: 900px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: -110px; /* Yukarı doğru taşı */
+    /* Ortalamak için eklenen stiller */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+.table-container h1 {
+    margin: 0 0 20px; /* Üst ve alt boşlukları ayarladık */
+    font-size: 24px;
+    color: #333;
+}
+
+
 table {
-    width: 100%;
-    max-width: 1200px; /* Tablo genişliği sınırı */
+    width: 100%; /* Tablo genişliğini artırdık */
+    max-width: 900px; /* Maksimum genişlik sınırını artırdık */
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    
     overflow: hidden;
+    margin: 0 auto; /* Ortada kalmasını sağladık */
 }
 
-th, td {
-    padding: 10px;
+table th, table td {
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
+table th {
     background-color: #333;
     color: white;
 }
 
-td a {
+table tr:hover {
+    background-color: #f5f5f5;
+}
+
+table td a {
     color: #007BFF;
     text-decoration: none;
 }
 
-td a:hover {
+table td a:hover {
     text-decoration: underline;
 }
