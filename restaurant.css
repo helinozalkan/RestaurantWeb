@@ -2,6 +2,10 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    background-image: url('menu-img/arkaPlan.png'); /* Görselin yolu */
+    background-size: cover; /* Görselin ekranı tamamen kaplamasını sağlar */
+    background-position: center; /* Görselin merkezde konumlanmasını sağlar */
+    background-attachment: fixed; /* Görselin sayfa kaydırıldığında sabit kalmasını sağlar */
     margin: 0;
     padding: 0;
 }
@@ -11,7 +15,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ff0000;
+    background-color: #bd1b1b;
     padding: 8px 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -79,6 +83,7 @@ body {
     border-color: #333;
 }
 
+
 /* Sidebar Tasarımı */
 .sidebar {
     position: fixed;
@@ -131,6 +136,14 @@ body {
     padding: 20px;
     margin-left: 270px; /* Sidebar genişliğiyle hizalanmış */
 }
+
+.main-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Boşluk azaltıldı */
+    padding: 0 2px; /* Yanlardaki padding azaltıldı */
+}
+
 
 .menu-item {
     background-color: white;
@@ -226,7 +239,7 @@ h1, h2 {
 #complete-order {
     width: 100%;
     padding: 10px;
-    background-color: #e74c3c;
+    background-color: #bd1b1b;
     color: white;
     border: none;
     border-radius: 4px;
@@ -312,3 +325,29 @@ h1, h2 {
     color: #666;
     margin-bottom: 5px;
 }
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remove-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.remove-btn:hover {
+    background: darkred;
+}
+

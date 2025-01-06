@@ -1,5 +1,6 @@
 <?php
 include 'db_connect.php'; // Veritabanı bağlantısı
+session_start();
 
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
@@ -83,18 +84,21 @@ $result = $conn->query($sql);
         let cart = [];
 
         $(document).ready(function () {
+            // Miktar artırma
             $('.increase').click(function () {
                 const quantityElement = $(this).siblings('.quantity');
                 let quantity = parseInt(quantityElement.text());
                 quantityElement.text(++quantity);
             });
 
+            // Miktar azaltma
             $('.decrease').click(function () {
                 const quantityElement = $(this).siblings('.quantity');
                 let quantity = parseInt(quantityElement.text());
                 if (quantity > 1) quantityElement.text(--quantity);
             });
 
+            // Sepete ekle butonuna tıklama
             $('.add-to-cart').click(function () {
                 const id = $(this).data('id');
                 const name = $(this).data('name');
@@ -103,23 +107,37 @@ $result = $conn->query($sql);
 
                 const item = cart.find(i => i.id === id);
                 if (item) {
-                    item.quantity += quantity;
+                    item.quantity += quantity; // Aynı üründen eklenirse miktarı artır
                 } else {
-                    cart.push({ id, name, price, quantity });
+                    cart.push({ id, name, price, quantity }); // Yeni ürün ekle
                 }
-                updateCart();
+                updateCart(); // Sepeti güncelle
             });
 
+            // Sepet güncelleme fonksiyonu
             function updateCart() {
                 let total = 0;
                 $('#cart-items').empty();
                 cart.forEach(item => {
                     total += item.price * item.quantity;
-                    $('#cart-items').append(`<li>${item.name} x${item.quantity} - ${item.price * item.quantity} TL</li>`);
+                    $('#cart-items').append(
+                        `<li>
+                            ${item.name} x${item.quantity} - ${item.price * item.quantity} TL
+                            <button class="remove-item" data-id="${item.id}">Sil</button>
+                        </li>`
+                    );
                 });
-                $('#total-price').text(total.toFixed(2));
+                $('#total-price').text(total.toFixed(2)); // Toplam fiyatı güncelle
             }
 
+            // Sepet öğesi silme
+            $(document).on('click', '.remove-item', function () {
+                const id = $(this).data('id');
+                cart = cart.filter(item => item.id !== id); // Silinen öğeyi sepetten çıkar
+                updateCart(); // Sepeti güncelle
+            });
+
+            // Siparişi tamamlama
             $('#complete-order').click(function () {
                 if (cart.length === 0) {
                     alert('Sepetiniz boş!');
@@ -132,8 +150,8 @@ $result = $conn->query($sql);
                     data: { cart: JSON.stringify(cart) },
                     success: function (response) {
                         alert('Siparişiniz başarıyla kaydedildi!');
-                        cart = [];
-                        updateCart();
+                        cart = []; // Sepeti sıfırla
+                        updateCart(); // Sepeti güncelle
                     },
                     error: function () {
                         alert('Sipariş sırasında bir hata oluştu.');
@@ -142,8 +160,8 @@ $result = $conn->query($sql);
             });
         });
 
-        
     </script>
 </body>
 </html>
+
 <?php $conn->close(); ?>

@@ -126,4 +126,106 @@ INSERT INTO Suppliers (name, contact_info) VALUES
 ('Tedarikçi A', '05321234567, İstanbul'),
 ('Tedarikçi B', '05443334444, Ankara');
 
+//kategori belirleme
+UPDATE Menu 
+SET category_id = (SELECT category_id FROM Categories WHERE name = 'Burger') 
+WHERE dish_name IN ('Whopper', 'Big King');
 
+UPDATE Menu 
+SET category_id = (SELECT category_id FROM Categories WHERE name = 'Tatlı') 
+WHERE dish_name = 'Çikolatalı Kek';
+
+UPDATE Menu 
+SET category_id = (SELECT category_id FROM Categories WHERE name = 'İçecek') 
+WHERE dish_name IN ('Coca-Cola', 'Sprite');
+
+UPDATE Menu 
+SET category_id = (SELECT category_id FROM Categories WHERE name = 'Atıştırmalık') 
+WHERE dish_name = 'Çikolatalı Kek';
+
+
+//KATEGORİLERE GÖRE GÖRÜNTÜLEME
+ALTER TABLE Menu ADD COLUMN category VARCHAR(255);
+
+
+// YENİ ÜRÜNLER ekleme
+INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
+(1, 'Cheeseburger', 'Lezzetli peynirli burger', 55.00, 'cheeseburger.jpg'),
+(1, 'Double Whopper', 'Çift etli ikonik burger', 80.00, 'double_whopper.jpg'),
+(1, 'Chicken Royale', 'Tavuklu burger', 50.00, 'chicken_royale.jpg'),
+(1, 'Veggie Burger', 'Vejetaryen seçenek', 45.00, 'veggie_burger.jpg'),
+(1, 'Classic Burger', 'Klasik burger', 40.00, 'classic_burger.jpg'),
+(1, 'Fish Burger', 'Balıklı burger', 60.00, 'fish_burger.jpg'),
+
+
+UPDATE Menu SET image = 'veggie_burger.jpg' WHERE menu_id = 21;
+UPDATE Menu SET image = 'classic_burger.jpg' WHERE menu_id = 22;
+UPDATE Menu SET image = 'fish_burger.jpg' WHERE menu_id = 23;
+
+
+INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
+(2, 'Sundae', 'Çikolatalı ve vanilyalı dondurma', 20.00, 'sundae.jpg'),
+(2, 'Profiterol', 'Kremalı tatlı', 25.00, 'profiterol.jpg'),
+(2, 'Cheesecake', 'Lezzetli cheesecake', 30.00, 'cheesecake.jpg'),
+(2, 'Baklava', 'Fıstıklı baklava', 35.00, 'baklava.jpg'),
+(2, 'Krema Dondurma', 'Sade dondurma', 15.00, 'cream_icecream.jpg'),
+(2, 'Karpuzlu Dondurma', 'Karpuzlu dondurma', 20.00, 'watermelon_icecream.jpg'),
+(2, 'Elmalı Turta', 'Elmalı tatlı', 25.00, 'apple_pie.jpg'),
+(2, 'Çikolatalı Mousse', 'Lezzetli çikolatalı mousse', 28.00, 'chocolate_mousse.jpg')
+
+
+UPDATE Menu SET image = 'sundae.jpg' WHERE menu_id = 24;
+UPDATE Menu SET image = 'profiterol.jpg' WHERE menu_id = 25;
+UPDATE Menu SET image = 'cheesecake.jpg' WHERE menu_id = 26;
+UPDATE Menu SET image = 'baklava.jpg' WHERE menu_id = 27;
+UPDATE Menu SET image = 'chocolate-cake.jpg' WHERE menu_id = 28;
+UPDATE Menu SET image = 'cream_icecream.jpg' WHERE menu_id = 29;
+UPDATE Menu SET image = 'watermelon_icecream.jpg' WHERE menu_id = 30;
+UPDATE Menu SET image = 'apple_pie.jpg' WHERE menu_id = 31;
+UPDATE Menu SET image = 'chocolate_mousse.jpg' WHERE menu_id = 32;
+
+
+INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
+(3, 'Fanta', 'Narenciye içeceği', 12.00, 'fanta.jpg'),
+(3, 'Pepsi', 'Cola içeceği', 12.00, 'pepsi.jpg'),
+(3, 'Ice Tea', 'Şekerli soğuk çay', 10.00, 'ice_tea.jpg'),
+(3, 'Ayran', 'Yoğurtlu içecek', 8.00, 'ayran.jpg'),
+(3, 'Limonata', 'Taze sıkılmış limonata', 15.00, 'lemonade.jpg'),
+(3, 'Vişne Suyu', 'Vişne içeceği', 14.00, 'cherry_juice.jpg'),
+(3, 'Portakal Suyu', 'Taze sıkılmış portakal suyu', 12.00, 'orange_juice.jpg')
+
+
+UPDATE Menu SET image = 'fanta.jpg' WHERE menu_id = 32;
+UPDATE Menu SET image = 'pepsi.jpg' WHERE menu_id = 33;
+UPDATE Menu SET image = 'ice_tea.jpg' WHERE menu_id = 34;
+UPDATE Menu SET image = 'ayran.jpg' WHERE menu_id = 35;
+UPDATE Menu SET image = 'lemonade.jpg' WHERE menu_id = 36;
+UPDATE Menu SET image = 'cherry_juice.jpg' WHERE menu_id = 37;
+UPDATE Menu SET image = 'orange_juice.jpg' WHERE menu_id = 38;
+
+
+
+INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
+(4, 'Patates Kızartması', 'Kızarmış patates', 35.00, 'fries.jpg'),
+(4, 'Mozzarella Sticks', 'Mozzarella peyniri dilimleri', 55.00, 'mozzarella_sticks.jpg'),
+(4, 'Onion Rings', 'Soğan halkaları', 18.00, 'onion_rings.jpg'),
+(4, 'Chicken Nuggets', 'Tavuk nugget', 20.00, 'chicken_nuggets.jpg'),
+(4, 'Kumpir', 'Fırın patates', 30.00, 'kumpir.jpg'),
+(4, 'Cips', 'Patlamış mısır', 10.00, 'chips.jpg'),
+(4, 'Dondurmalı Çörek', 'Tatlı çörek', 20.00, 'donut_icecream.jpg'),
+(4, 'Pizza Dilimi', 'Küçük pizza dilimi', 22.00, 'pizza_slice.jpg'),
+(4, 'Tavuk Kanatları', 'Barbekü soslu tavuk kanatları', 35.00, 'chicken_wings.jpg'),
+(4, 'Börek', 'İçli börek', 25.00, 'borek.jpg')
+
+
+
+UPDATE Menu SET image = 'fries.jpg' WHERE menu_id = 39;
+UPDATE Menu SET image = 'mozzarella_sticks.jpg' WHERE menu_id = 24;
+UPDATE Menu SET image = 'onion_rings.jpg' WHERE menu_id = 41;
+UPDATE Menu SET image = 'chicken_nuggets.jpg' WHERE menu_id = 42;
+UPDATE Menu SET image = 'kumpir.jpg' WHERE menu_id = 43;
+UPDATE Menu SET image = 'chips.jpg' WHERE menu_id = 44;
+UPDATE Menu SET image = 'donut_icecream.jpg' WHERE menu_id = 45;
+UPDATE Menu SET image = 'pizza_slice.jpg' WHERE menu_id = 46;
+UPDATE Menu SET image = 'chicken_wings.jpg' WHERE menu_id = 47;
+UPDATE Menu SET image = 'borek.jpg' WHERE menu_id = 48;

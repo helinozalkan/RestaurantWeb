@@ -2,15 +2,18 @@
 include 'db_connect.php'; // Veritabanı bağlantısı
 session_start();
 
-// Kullanıcının ID'sini almak için oturum kontrolü
+// Kullanıcı giriş kontrolü
 if (!isset($_SESSION['customer_id'])) {
     die("Lütfen giriş yapın.");
 }
 
 $customer_id = $_SESSION['customer_id'];
 
-// Siparişleri sorgula
-$sql = "SELECT order_id, total_price, status, created_at FROM Orders WHERE customer_id = ?";
+// Kullanıcının siparişlerini getir
+$sql = "SELECT o.order_id, o.total_price, o.status, o.created_at, d.dish_name, d.quantity
+        FROM Orders o
+        JOIN OrderDetails d ON o.order_id = d.order_id
+        WHERE o.customer_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $customer_id);
 $stmt->execute();
@@ -31,15 +34,19 @@ $result = $stmt->get_result();
             <table>
                 <tr>
                     <th>Sipariş ID</th>
-                    <th>Toplam Tutar</th>
+                    <th>Ürün</th>
+                    <th>Adet</th>
                     <th>Durum</th>
+                    <th>Fiyat</th>
                     <th>Tarih</th>
                 </tr>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['order_id']; ?></td>
-                        <td><?php echo $row['total_price']; ?> TL</td>
+                        <td><?php echo $row['dish_name']; ?></td>
+                        <td><?php echo $row['quantity']; ?></td>
                         <td><?php echo $row['status']; ?></td>
+                        <td><?php echo $row['total_price']; ?> TL</td>
                         <td><?php echo $row['created_at']; ?></td>
                     </tr>
                 <?php endwhile; ?>
@@ -50,7 +57,4 @@ $result = $stmt->get_result();
     </div>
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
+<?php $conn->close(); ?>
