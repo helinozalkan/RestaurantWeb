@@ -1,13 +1,21 @@
 /* Genel Gövde Stili */
+/* Sayfanın arka planına görsel eklemek için */
 body {
     font-family: Arial, sans-serif;
     background-color: #ecf0f1;
+    background-image: url('menu-img/arkaPlan.png'); /* Görselin yolu */
+    background-size: cover; /* Görselin ekranı tamamen kaplamasını sağlar */
+    background-position: center; /* Görselin merkezde konumlanmasını sağlar */
+    background-attachment: fixed; /* Görselin sayfa kaydırıldığında sabit kalmasını sağlar */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column; /* Sayfa düzenini dikey yapıyoruz */
     height: 100vh; /* Sayfanın tamamını kapsar */
+    justify-content: center; /* Dikeyde ortalama */
+    align-items: center; /* Yatayda ortalama */
 }
+
 
 /* Üst Menü (Yatay olarak üstte) */
 .top-bar {
@@ -17,7 +25,7 @@ body {
     justify-content: flex-start; /* Öğeleri sola hizalar */
     align-items: center; /* Logo ve başlığı dikeyde ortalar */
     gap: 10px; /* Logo ile başlık arasında boşluk */
-    background-color: #ff0000; /* Kırmızı tonu  */
+    background-color: #bd1b1b; /* Kırmızı tonu  */
     color: white;
     box-sizing: border-box;
     position: fixed; /* Sabit konumda üstte yerleştir */
@@ -33,13 +41,51 @@ body {
     align-items: center; /* Logo ve başlık aynı hizada olsun */
 }
 
+.button-panel {
+    position: absolute; /* Konumlandırmayı mutlak yap */
+    top: 50%; /* Ekranın ortasına yerleştirmek için */
+    left: 50%; /* Ekranın ortasına yerleştirmek için */
+    transform: translate(-50%, -50%); /* Tam ortalamak için */
+    display: flex;
+    flex-wrap: wrap; /* Butonların alt satıra geçmesini sağla */
+    gap: 20px; /* Butonlar arası boşluk */
+    width: 600px; /* Buton panelinin genişliğini büyüt */
+    height: 400px; /* Buton panelinin yüksekliğini büyüt */
+    justify-content: center; /* Butonları yatayda ortalamak için */
+    align-items: center; /* Butonları dikeyde ortalamak için */
+}
+
+.panel-button {
+    padding: 60px; /* İçerik alanını büyüt */
+    font-size: 24px; /* Yazı boyutunu büyüt */
+    background-color: #bd1b1b; /* Yeşil ton */
+    color: white;
+    border: none;
+    border-radius: 8px; /* Oval kenarlar */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 290px; /* Buton genişliğini büyüt */
+    height: 145px; /* Buton yüksekliğini büyüt */
+}
+
+.panel-button:hover {
+    background-color: #d86262; /* Daha koyu yeşil */
+    transform: scale(1.05); /* Hafif büyütme efekti */
+}
+
+.panel-button:active {
+    background-color: #bd1b1b; /* Daha koyu tonda aktif durum */
+    transform: scale(1);
+}
+
 .top-bar h1 {
     font-size: 24px;
     margin: 0;
     /* Başlık hizası, margin-left ve margin-top kaldırıldı */
 }
 
-/* Köpek logosu için*/
+/* Köpek logosu için */
 .top-bar .logo {
     width: 50px; /* Logo boyutunu ayarladım */
     height: 50px; /* Logo boyutunu ayarladım */
@@ -75,50 +121,6 @@ body {
     width: 100%;
 }
 
-/* Sidebar (Dikey solda) */
-.sidebar {
-    width: 250px;
-    background-color: #ffffff; /* Koyu gri mavi tonu: #34495e */
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    position: fixed; /* Sabit sidebar */
-    top: 60px; /* Üst menüsünün hemen altına */
-    left: 0;
-    height: calc(100vh - 60px); /* Sidebar'ı ekranın tamamına yayacak şekilde ayarlıyoruz */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Executive Panel yazısı için */
-.sidebar h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #000000;
-}
-
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin: 15px 0;
-}
-
-/* Sidebar yazıları için */
-.sidebar ul li a {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-    background-color: #16a085; /* Yeşil ton */
-}
 
 /* Menü İçeriği (Sidebar'ın sağında) */
 .menu-container {

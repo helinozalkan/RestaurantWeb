@@ -188,7 +188,7 @@ $totalAmount = 0;
                             <td><?= $row['created_at'] ?></td>
                             <td>
                                 <!-- Ok butonu, onclick ile JavaScript fonksiyonunu çağırıyoruz -->
-                                <button class="arrow-button" onclick="createTxtFile('<?= $row['dish_name'] ?>', '<?= $row['quantity'] ?>', '<?= $row['total_price'] ?>', '<?= $row['created_at'] ?>')" title="Aşağı Yönlü Ok"></button>
+                                <button class="arrow-button" onclick="createTxtFile('<?= $row['dish_name'] ?>', '<?= $row['quantity'] ?>', '<?= $row['total_price'] ?>', '<?= $row['created_at'] ?>')" title="İndir"></button>
                             </td>
                         </tr>
                         <?php $totalAmount += $row['total_price']; ?> <!-- Toplam tutarı güncelle -->
