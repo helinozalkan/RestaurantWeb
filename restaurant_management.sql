@@ -71,6 +71,12 @@ CREATE TABLE Suppliers (
     contact_info TEXT
 );
 
+-- 6 ocak 21:10 da buraya bu alter komutları eklendi
+ALTER TABLE menu ADD COLUMN image VARCHAR(255);
+
+ALTER TABLE Orders ADD COLUMN quantity int;
+
+ALTER TABLE Suppliers ADD COLUMN service_area VARCHAR(255);
 
 -- Örnek veri ekleme
 
@@ -126,7 +132,7 @@ INSERT INTO Suppliers (name, contact_info) VALUES
 ('Tedarikçi A', '05321234567, İstanbul'),
 ('Tedarikçi B', '05443334444, Ankara');
 
-//kategori belirleme
+--kategori belirleme
 UPDATE Menu 
 SET category_id = (SELECT category_id FROM Categories WHERE name = 'Burger') 
 WHERE dish_name IN ('Whopper', 'Big King');
@@ -144,11 +150,13 @@ SET category_id = (SELECT category_id FROM Categories WHERE name = 'Atıştırma
 WHERE dish_name = 'Çikolatalı Kek';
 
 
-//KATEGORİLERE GÖRE GÖRÜNTÜLEME
+--KATEGORİLERE GÖRE GÖRÜNTÜLEME
 ALTER TABLE Menu ADD COLUMN category VARCHAR(255);
 
+-- Kategori sütununu silme
+ALTER TABLE Menu DROP COLUMN category;
 
-// YENİ ÜRÜNLER ekleme
+--YENİ ÜRÜNLER ekleme
 INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
 (1, 'Cheeseburger', 'Lezzetli peynirli burger', 55.00, 'cheeseburger.jpg'),
 (1, 'Double Whopper', 'Çift etli ikonik burger', 80.00, 'double_whopper.jpg'),
@@ -220,7 +228,7 @@ INSERT INTO Menu (category_id, dish_name, description, price, image_url) VALUES
 
 
 UPDATE Menu SET image = 'fries.jpg' WHERE menu_id = 39;
-UPDATE Menu SET image = 'mozzarella_sticks.jpg' WHERE menu_id = 24;
+UPDATE Menu SET image = 'mozzarella_sticks.jpg' WHERE menu_id =40;
 UPDATE Menu SET image = 'onion_rings.jpg' WHERE menu_id = 41;
 UPDATE Menu SET image = 'chicken_nuggets.jpg' WHERE menu_id = 42;
 UPDATE Menu SET image = 'kumpir.jpg' WHERE menu_id = 43;
@@ -229,3 +237,9 @@ UPDATE Menu SET image = 'donut_icecream.jpg' WHERE menu_id = 45;
 UPDATE Menu SET image = 'pizza_slice.jpg' WHERE menu_id = 46;
 UPDATE Menu SET image = 'chicken_wings.jpg' WHERE menu_id = 47;
 UPDATE Menu SET image = 'borek.jpg' WHERE menu_id = 48;
+
+-- Tedarik için hizmet alanı ekleme
+UPDATE Suppliers SET service_area = 'Bakliyat' WHERE name = 'Tedarikçi A';
+UPDATE Suppliers SET service_area = 'Sebze' WHERE name = 'Tedarikçi B';
+
+
