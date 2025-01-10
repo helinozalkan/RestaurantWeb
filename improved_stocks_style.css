@@ -1,0 +1,119 @@
+/* Genel ayarlar */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ecf0f1;
+    background-image: url('menu-img/arkaPlan.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #c30000;
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Geri Dön Butonu */
+.back-button-container {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.back-button {
+    background-color: #c30000;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #a20000;
+    transform: translateY(-2px); /* Buton hoverda hafif yükselsin */
+}
+
+.back-button:active {
+    background-color: #8a0000;
+    transform: translateY(0); /* Buton tıklanırken eski pozisyona dönsün */
+}
+
+.back-button i {
+    margin-right: 8px;
+}
+
+/* Başlık Konteyner */
+.title-container {
+    text-align: center;
+    margin-top: 80px;
+}
+
+.title-container h1 {
+    display: inline-block;
+    background-color: #c30000;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 28px;
+}
+
+/* Tablo Konteyner */
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+table th, table td {
+    text-align: left;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #c30000;
+    color: white;
+    font-size: 18px;
+}
+
+table td {
+    font-size: 16px;
+}
+
+table tr:hover {
+    background-color: #f2f2f2;
+}

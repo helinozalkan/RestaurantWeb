@@ -229,3 +229,8 @@ UPDATE Menu SET image = 'donut_icecream.jpg' WHERE menu_id = 45;
 UPDATE Menu SET image = 'pizza_slice.jpg' WHERE menu_id = 46;
 UPDATE Menu SET image = 'chicken_wings.jpg' WHERE menu_id = 47;
 UPDATE Menu SET image = 'borek.jpg' WHERE menu_id = 48;
+
+
+
+-- sipariş durumu için 3 seçenek eklenmesi
+ALTER TABLE orders MODIFY COLUMN status ENUM('Pending', 'Preparing', 'Prepared') DEFAULT 'Pending'; 
