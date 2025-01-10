@@ -2,8 +2,10 @@
 include 'db_connect.php'; // Veritabanı bağlantısı
 session_start();
 
+// Kategori ID kontrolü
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
+// Menü sorgusu
 $sql = $category_id 
     ? "SELECT menu_id, dish_name, description, price, image FROM Menu WHERE category_id = $category_id"
     : "SELECT menu_id, dish_name, description, price, image FROM Menu";
@@ -24,11 +26,11 @@ $result = $conn->query($sql);
     <!-- Üst Menü -->
     <div class="top-bar">
         <div class="logo-area">
-            <img src="menu-img/logo.jpg" alt="Logo" class="logo">
+            <img src="menu-img/logo.png" alt="Logo" class="logo">
             <h1>Mrs. Kumsal's House</h1>
         </div>
         <div class="search-area">
-            <input type="text" placeholder="Yemek ara..." class="search-input">
+            <input type="text" placeholder="Yemek ara..." class="search-input" id="search-input">
         </div>
         <div class="profile-area">
             <img src="menu-img/profile.png" alt="Profil" class="profile-img">
@@ -49,7 +51,7 @@ $result = $conn->query($sql);
 
     <!-- Menü ve Sepet -->
     <div class="main-content">
-        <div class="menu-container">
+        <div class="menu-container" id="menu-container">
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="menu-item">
@@ -71,7 +73,6 @@ $result = $conn->query($sql);
                 <p>Bu kategoride henüz yemek bulunmamaktadır.</p>
             <?php endif; ?>
         </div>
-
         <div class="cart-container">
             <h2>Sepetiniz</h2>
             <ul id="cart-items"></ul>
@@ -156,6 +157,15 @@ $result = $conn->query($sql);
                     error: function () {
                         alert('Sipariş sırasında bir hata oluştu.');
                     }
+                });
+            });
+
+            // Arama çubuğu
+            $('#search-input').on('keyup', function () {
+                const searchTerm = $(this).val().toLowerCase();
+                $('.menu-item').each(function () {
+                    const dishName = $(this).find('h3').text().toLowerCase();
+                    $(this).toggle(dishName.includes(searchTerm));
                 });
             });
         });
