@@ -116,3 +116,18 @@ label a{
     transform: scale(1); /* Tıklanırken büyüme efekti kaybolur */
 }
 
+/* Logo stilini tanımlıyoruz */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 250px; /* Logo boyutunu istediğiniz gibi ayarlayabilirsiniz */
+    height: auto;
+    border-radius: 50%;
+
+}
+
+

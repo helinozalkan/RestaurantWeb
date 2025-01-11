@@ -76,7 +76,6 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
         <div class="profile-area">
             <img src="menu-img/user-boy-profile.png" alt="Profil" class="profile-img" onclick="toggleLogoutButton()" >
             <button id="logout-button" onclick="location.href='login.php'" class="logout-button">Çıkış Yap</button>
-
         </div>
     </div>
 
@@ -127,9 +126,19 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     </div>
 
     <script>
+        // 1) cart adlı değişkeni tanımlayalım.
         let cart = [];
 
         $(document).ready(function () {
+            // 2) Sayfa yenilendiğinde önceden kaydedilmiş sepet varsa localStorage'dan al.
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
+            }
+
+            // Sepet görünümünü başlatır.
+            updateCart();
+
             $('.increase').click(function () {
                 const quantityElement = $(this).siblings('.quantity');
                 let quantity = parseInt(quantityElement.text());
@@ -157,75 +166,83 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                 updateCart();
             });
 
+            // Sepet güncelleme fonksiyonu
             function updateCart() {
                 let total = 0;
                 $('#cart-items').empty();
+
                 cart.forEach(item => {
+                    const itemTotal = (item.price * item.quantity).toFixed(2);
                     total += item.price * item.quantity;
                     $('#cart-items').append(
-                        `<li>${item.name} x${item.quantity} - ${item.price * item.quantity} TL
-                        <button class="remove-item" data-id="${item.id}">Sil</button></li>`
+                        `<li>${item.name} x${item.quantity} - ${itemTotal} TL
+                            <button class="remove-item" data-id="${item.id}">Sil</button>
+                        </li>`
                     );
                 });
+
                 $('#total-price').text(total.toFixed(2));
+
+                // **3) Güncel sepeti localStorage'a kaydet.**
+                localStorage.setItem('cart', JSON.stringify(cart));
             }
 
+            // Ürün silme
             $(document).on('click', '.remove-item', function () {
                 const id = $(this).data('id');
                 cart = cart.filter(item => item.id !== id);
                 updateCart();
             });
+
+            // Siparişi Tamamla butonu
             $('#complete-order').click(function () {
-    if (cart.length === 0) {
-        alert("Sepetiniz boş. Lütfen ürün ekleyin.");
-        return;
-    }
-
-    const orderData = {
-        cart: JSON.stringify(cart),
-        total_price: $('#total-price').text()
-    };
-
-    console.log("Sipariş verisi gönderiliyor:", orderData);  // Debugging: Sipariş verisi
-    
-    $.ajax({
-        url: 'complete-order.php',
-        method: 'POST',
-        data: {
-            cart: JSON.stringify(cart),
-            total_price: $('#total-price').text()
-        },
-        contentType: 'application/x-www-form-urlencoded',  // Bu satır eklendi
-        success: function(response) {
-            console.log("Başarıyla sipariş gönderildi:", response);  // Debugging: Başarı durumu
-            try {
-                const result = JSON.parse(response);
-                if (result.status === 'success') {
-                    alert(result.message);
-                    cart = []; // Sepeti sıfırla
-                    updateCart(); // Sepet güncelle
-                } else {
-                    alert("Sipariş sırasında bir hata oluştu.");
+                if (cart.length === 0) {
+                    alert("Sepetiniz boş. Lütfen ürün ekleyin.");
+                    return;
                 }
-            } catch (e) {
-                console.log("JSON Hatası: ", e);  // JSON parse hatalarını debug et
-                alert("Bir hata oluştu. Lütfen tekrar deneyin.");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.log("AJAX Hatası:", status, error);  // Debugging: Hata mesajı
-            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
-        }
-    });
-});
-});
+
+                const orderData = {
+                    cart: JSON.stringify(cart),
+                    total_price: $('#total-price').text()
+                };
+
+                $.ajax({
+                    url: 'complete-order.php',
+                    method: 'POST',
+                    data: {
+                        cart: JSON.stringify(cart),
+                        total_price: $('#total-price').text()
+                    },
+                    contentType: 'application/x-www-form-urlencoded',
+                    success: function(response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.status === 'success') {
+                                alert(result.message);
+                                cart = []; // Sepeti sıfırla
+                                updateCart(); // Sepeti güncelle
+                                // Dilerseniz localStorage'ı da sıfırlayabilirsiniz:
+                                // localStorage.removeItem('cart');
+                            } else {
+                                alert("Sipariş sırasında bir hata oluştu.");
+                            }
+                        } catch (e) {
+                            console.log("JSON Hatası: ", e);
+                            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX Hatası:", status, error);
+                        alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                    }
+                });
+            });
+        });
 
         function toggleLogoutButton() {
             const logoutButton = document.getElementById('logout-button');
             logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
         }
-
-
     </script>
 </body>
 </html>

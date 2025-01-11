@@ -45,5 +45,7 @@ $result = $conn->query($sql);
             logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
         }
     </script>
+
+    
 </body>
 </html>
