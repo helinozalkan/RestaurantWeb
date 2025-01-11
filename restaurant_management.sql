@@ -398,3 +398,47 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+-- stok takibi trigger için tablo 
+CREATE TABLE stock_update_logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    stock_id INT,
+    ingredient_id INT,
+    old_quantity INT,
+    new_quantity INT,
+    update_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (stock_id) REFERENCES stock(stock_id),
+    FOREIGN KEY (ingredient_id) REFERENCES ingredients(ingredient_id)
+);
+ 
+ -- stok takibi trigger
+DELIMITER $$
+
+CREATE TRIGGER log_stock_update
+AFTER UPDATE ON stock
+FOR EACH ROW
+BEGIN
+    DECLARE chef_id INT;
+
+    SET chef_id = (SELECT chef_id FROM chefs WHERE email = CURRENT_USER());
+
+    INSERT INTO stock_update_logs (
+        stock_id, 
+        ingredient_id, 
+        chef_id, 
+        old_quantity, 
+        new_quantity, 
+        update_time
+    )
+    VALUES (
+        OLD.stock_id,
+        OLD.ingredient_id,
+        chef_id,
+        OLD.quantity,
+        NEW.quantity,
+        NOW()
+    );
+END$$
+
+DELIMITER ;

@@ -164,3 +164,5 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
 </html>
 
 <?php $conn->close(); ?>
+
+
