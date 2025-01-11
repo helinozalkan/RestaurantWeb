@@ -55,7 +55,9 @@ body {
     font-size: 14px;
     margin: 0 auto; /* Yatayda ortalama */
     display: block; /* Bu özellik, margin: 0 auto'nun çalışmasını sağlar */
+    margin-left: 400px; /* Butonu 20px sağa kaydırır */
 }
+
 
 .categories {
     display: flex;

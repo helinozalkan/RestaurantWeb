@@ -39,10 +39,10 @@ $result = $conn->query($sql);
     <div class="container">
         <header class="header">
             <div class="logo">
-                <img src="menu-img/logo.jpg" alt="Logo">
+                <img src="menu-img/logo.png" alt="Logo">
                 <span>Mrs. Kumsal's House</span>
             </div>
-            <input type="text" class="search-bar" placeholder="Search dishes...">
+            <input type="text" class="search-bar" placeholder="Stok veya sipariş ara...">
         </header>
 
         <div class="categories">

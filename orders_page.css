@@ -5,12 +5,8 @@ body {
     background-image: url('menu-img/arkaPlan.png');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
 }
 
 /* Header */
@@ -18,7 +14,7 @@ body {
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background-color: #c30000;
+    background-color: #c30000;  /* Logo ve header rengi */
     color: white;
 }
 
@@ -31,6 +27,84 @@ body {
     width: 40px;
     height: 40px;
     margin-right: 10px;
+}
+
+/* Başlık Konteyner */
+.title-container {
+    text-align: center;
+    margin-top: 80px; /* Başlık konumunu yukarıya aldım */
+}
+
+.title-container h1 {
+    display: inline-block;
+    background-color: #c30000;  /* Başlık arka plan rengi */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 28px;
+}
+
+/* Tablo Konteyner */
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #c30000;  /* Tablo başlık rengi */
+    color: white;
+    font-size: 18px;
+}
+
+table td {
+    font-size: 16px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #ddd;
+}
+
+/* Tablo hücrelerinde butonlar için stil */
+table .increase, table .decrease {
+    background-color: #28a745;  /* Artırma butonu yeşil */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+table .increase:hover {
+    background-color: #218838;
+}
+
+table .decrease {
+    background-color: #dc3545;  /* Azaltma butonu kırmızı */
+}
+
+table .decrease:hover {
+    background-color: #c82333;
 }
 
 /* Geri Dön Butonu */
@@ -68,52 +142,31 @@ body {
     margin-right: 8px;
 }
 
-/* Başlık Konteyner */
-.title-container {
-    text-align: center;
-    margin-top: 80px;
-}
-
-.title-container h1 {
-    display: inline-block;
-    background-color: #c30000;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 28px;
-}
-
 /* Tablo Konteyner */
 .table-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 10px;
+    margin-bottom: 60px; /* Alt kısmına boşluk ekledik */
 }
 
-table {
+/* Diğer stil ayarları */
+.table-container table {
     width: 70%;
     border-collapse: collapse;
     background-color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
 }
 
-table th, table td {
-    text-align: left;
-    padding: 15px;
-    border: 1px solid #ddd;
-}
-
-table th {
-    background-color: #c30000;
-    color: white;
-    font-size: 18px;
-}
-
-table td {
-    font-size: 16px;
-}
-
-table tr:hover {
-    background-color: #f2f2f2;
+.search-bar {
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    margin: 0 auto; /* Yatayda ortalama */
+    display: block; /* Bu özellik, margin: 0 auto'nun çalışmasını sağlar */
+    margin-left: 400px; /* Butonu 20px sağa kaydırır */
 }
