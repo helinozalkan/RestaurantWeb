@@ -74,7 +74,9 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
             <input type="text" placeholder="Yemek ara..." class="search-input" id="search-input">
         </div>
         <div class="profile-area">
-            <img src="menu-img/profile.png" alt="Profil" class="profile-img">
+            <img src="menu-img/user-boy-profile.png" alt="Profil" class="profile-img" onclick="toggleLogoutButton()" >
+            <button id="logout-button" onclick="location.href='login.php'" class="logout-button">Çıkış Yap</button>
+
         </div>
     </div>
 
@@ -217,6 +219,11 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     });
 });
 });
+
+        function toggleLogoutButton() {
+            const logoutButton = document.getElementById('logout-button');
+            logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
+        }
 
 
     </script>
