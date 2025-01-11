@@ -302,3 +302,39 @@ BEGIN
     SELECT name, service_area, contact_info FROM suppliers;
 END //
 DELIMITER ;
+
+
+--stocks_page sayfası için gerekli prosedür
+DELIMITER //
+
+CREATE PROCEDURE update_stock_quantity(IN p_ingredient_id INT, IN p_quantity INT)
+BEGIN
+    -- Quantity değeri 1'den küçük olamaz
+    IF p_quantity < 1 THEN
+        SET p_quantity = 1;
+    END IF;
+
+    -- Miktarı güncelleme
+    UPDATE stock 
+    SET quantity = p_quantity 
+    WHERE ingredient_id = p_ingredient_id;
+END //
+
+DELIMITER ;
+
+-- menu sayfası için prosedür
+DELIMITER $$
+
+CREATE PROCEDURE GetMenuByCategory(IN category_id INT)
+BEGIN
+    IF category_id IS NULL THEN
+        SELECT menu_id, dish_name, description, price, image 
+        FROM Menu;
+    ELSE
+        SELECT menu_id, dish_name, description, price, image 
+        FROM Menu 
+        WHERE category_id = category_id;
+    END IF;
+END $$
+
+DELIMITER ;

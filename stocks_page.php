@@ -13,19 +13,18 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
     $ingredient_id = intval($_POST['ingredient_id']);
     $quantity = intval($_POST['quantity']);
 
-    // Quantity değeri 1'den küçük olamaz
-    if ($quantity < 1) {
-        $quantity = 1;
-    }
-
-    // SQL sorgusu ile miktarı güncelle
-    $sql = "UPDATE stock SET quantity = ? WHERE ingredient_id = ?";
+    // Saklı yordamı çağır
+    $sql = "CALL update_stock_quantity(?, ?)";
     $stmt = $conn->prepare($sql);
+    
     if ($stmt === false) {
         die('Veritabanı sorgusu hatalı: ' . $conn->error);
     }
-    $stmt->bind_param("ii", $quantity, $ingredient_id);
 
+    // Parametreleri bağla
+    $stmt->bind_param("ii", $ingredient_id, $quantity);
+
+    // Saklı yordamı çalıştır
     if ($stmt->execute()) {
         echo "success"; // Başarılı güncelleme mesajı
     } else {
@@ -36,6 +35,7 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
     exit; // AJAX isteği sonlandırılıyor
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
