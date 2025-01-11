@@ -94,3 +94,7 @@ body {
     transform: scale(1.05);
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
 }
+.category-button {
+    text-decoration: none; /* Alt çizgiyi kaldırır */
+    /* Diğer stil özellikleriniz */
+}

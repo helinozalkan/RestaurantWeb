@@ -173,7 +173,7 @@ $result_prepared = $conn->query($sql_prepared);
                             <td>
                                 <form method='POST'>
                                     <input type='hidden' name='order_id' value='{$row['order_id']}'>
-                                    <button type='submit' name='order_delivered' class='delivered-button'>Teslim Et</button>
+                                    <button type='submit' name='order_delivered' class='delivered-button'>Afiyet Olsun!</button>
                                 </form>
                             </td>
                         </tr>";

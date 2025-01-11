@@ -10,28 +10,31 @@ if ($conn->connect_error) {
 
 // Miktar güncelleme işlemi
 if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
-    $ingredient_id = $_POST['ingredient_id'];
-    $quantity = $_POST['quantity'];
+    $ingredient_id = intval($_POST['ingredient_id']);
+    $quantity = intval($_POST['quantity']);
 
     // Quantity değeri 1'den küçük olamaz
     if ($quantity < 1) {
         $quantity = 1;
     }
 
-    // Veritabanında güncelleme işlemi
+    // SQL sorgusu ile miktarı güncelle
     $sql = "UPDATE stock SET quantity = ? WHERE ingredient_id = ?";
     $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        die('Veritabanı sorgusu hatalı: ' . $conn->error);
+    }
     $stmt->bind_param("ii", $quantity, $ingredient_id);
 
     if ($stmt->execute()) {
-        echo "success";
+        echo "success"; // Başarılı güncelleme mesajı
     } else {
-        echo "error";
+        echo "error: " . $stmt->error; // Hata mesajı
     }
 
     $stmt->close();
+    exit; // AJAX isteği sonlandırılıyor
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -72,12 +75,12 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
                     <tr>
                         <th>Malzeme Adı</th>
                         <th>Birim</th>
-                        <th>Miktar</th> <!-- Yeni sütun -->
+                        <th>Miktar</th>
+                        <th>İşlem</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    // ingredient ve stock tablosunu birleştiriyoruz
                     $sql = "
                         SELECT i.name, i.unit, s.quantity, i.ingredient_id
                         FROM ingredients i
@@ -94,11 +97,14 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
                                     <button class='decrease' data-ingredient-id='{$row['ingredient_id']}'>-</button>
                                     <span class='quantity'>{$row['quantity']}</span>
                                     <button class='increase' data-ingredient-id='{$row['ingredient_id']}'>+</button>
-                                </td> <!-- Miktar verisi -->
+                                </td>
+                                <td>
+                                    <button class='approve' data-ingredient-id='{$row['ingredient_id']}'>Onayla</button>
+                                </td>
                             </tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='3'>Hiçbir malzeme bulunamadı.</td></tr>";
+                        echo "<tr><td colspan='4'>Hiçbir malzeme bulunamadı.</td></tr>";
                     }
                     ?>
                 </tbody>
@@ -132,13 +138,21 @@ if (isset($_POST['ingredient_id']) && isset($_POST['quantity'])) {
             }
         });
 
+        // Onayla butonuna tıklama işlemi
+        $('.approve').click(function () {
+            const ingredientId = $(this).data('ingredient-id');
+
+            // Onaylama işlemi yapılacak, kullanıcıya onay mesajı gösterilebilir
+            alert("Malzeme onaylandı: " + ingredientId);
+        });
+
         // Veritabanını güncelleyen fonksiyon
         function updateQuantity(ingredientId, quantity) {
-            $.post('index.php', {
+            $.post('stocks_page.php', {
                 ingredient_id: ingredientId,
                 quantity: quantity
             }, function(response) {
-                if (response === 'success') {
+                if (response.trim() === 'success') {
                     console.log('Miktar başarıyla güncellendi.');
                 } else {
                     console.log('Hata: Miktar güncellenemedi.');

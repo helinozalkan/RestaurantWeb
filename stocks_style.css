@@ -1,31 +1,21 @@
-/* Sayfanın genel düzeni */
+/* Genel ayarlar */
 body {
     font-family: Arial, sans-serif;
     background-color: #ecf0f1;
     background-image: url('menu-img/arkaPlan.png');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
 }
 
-/* Header: Logo */
+/* Header */
 .header {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
     padding: 10px 20px;
-    background-color: #c30000;
+    background-color: #c30000;  /* Logo ve header rengi */
     color: white;
-    z-index: 1000;
 }
 
 .logo {
@@ -36,54 +26,187 @@ body {
 .logo img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
     margin-right: 10px;
 }
 
-/* Sayfa Ortasında Butonlar */
-.categories {
+/* Başlık Konteyner */
+.title-container {
+    text-align: center;
+    margin-top: 80px; /* Başlık konumunu yukarıya aldım */
+}
+
+.title-container h1 {
+    display: inline-block;
+    background-color: #c30000;  /* Başlık arka plan rengi */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 28px;
+}
+
+/* Tablo Konteyner */
+.table-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
-    gap: 20px;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
+    margin-top: 40px;
+    flex-direction: column;  /* Butonları alt alta yerleştir */
 }
 
-/* Malzemeler Tablosu */
-.ingredients-table {
-    margin-top: 150px; /* Üst kısmın biraz daha altından başlasın */
-    width: 80%;
-    overflow-x: auto;
-}
-
-.ingredients-table table {
-    width: 100%;
+table {
+    width: 70%;
     border-collapse: collapse;
-    margin-top: 20px;
     background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
 }
 
-.ingredients-table th, .ingredients-table td {
-    padding: 10px;
-    text-align: left;
+table th, table td {
+    text-align: center;
+    padding: 15px;
     border: 1px solid #ddd;
 }
 
-.ingredients-table th {
-    background-color: #c30000;
+table th {
+    background-color: #c30000;  /* Tablo başlık rengi */
     color: white;
+    font-size: 18px;
 }
 
-.ingredients-table tr:nth-child(even) {
+table td {
+    font-size: 16px;
+}
+
+/* Tabloyu orantılı hale getirme */
+table td, table th {
+    width: 25%;  /* Sütun genişliklerini orantılı yap */
+}
+
+table tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-.ingredients-table tr:hover {
+table tr:hover {
     background-color: #ddd;
 }
 
+/* Tablo hücrelerinde butonlar için stil */
+table .increase, table .decrease {
+    background-color: #28a745;  /* Artırma butonu yeşil */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+table .increase:hover {
+    background-color: #218838;
+}
+
+table .decrease {
+    background-color: #dc3545;  /* Azaltma butonu kırmızı */
+}
+
+table .decrease:hover {
+    background-color: #c82333;
+}
+
+/* Geri Dön Butonu */
+.back-button-container {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.back-button {
+    background-color: #c30000;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #a20000;
+    transform: translateY(-2px); /* Buton hoverda hafif yükselsin */
+}
+
+.back-button:active {
+    background-color: #8a0000;
+    transform: translateY(0); /* Buton tıklanırken eski pozisyona dönsün */
+}
+
+.back-button i {
+    margin-right: 8px;
+}
+
+/* Tablo Konteyner */
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 60px; /* Alt kısmına boşluk ekledik */
+}
+
+/* Diğer stil ayarları */
+.table-container table {
+    width: 70%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Teslim Et butonu için stil */
+.delivered-button {
+    background-color: #28a745;  /* Yeşil arka plan rengi */
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;  /* Butonun köşelerini yuvarlatma */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    width: 200px;  /* Buton genişliği */
+    margin: 5px 0;  /* Butonun üst ve altına boşluk ekleyelim */
+    margin-top: 20px; /* Tablonun altına biraz boşluk ekleyelim */
+}
+
+.delivered-button:hover {
+    background-color: #218838;  /* Hover durumunda buton rengi değişir */
+    transform: translateY(-4px);  /* Hoverda buton hafifçe yükselir */
+}
+
+.delivered-button:active {
+    background-color: #1e7e34;  /* Tıklanırken buton rengi değişir */
+    transform: translateY(2px);  /* Tıklanırken buton hafifçe iner */
+}
+
+/* Butonun çevresinde bir kenarlık (isteğe bağlı) */
+.delivered-button:focus {
+    outline: none;  /* Buton odaklandığında etrafındaki kenarlık kaybolur */
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.5);  /* Buton odaklandığında yeşil renkli kenarlık */
+}
+
+/* Search bar stilini ayarlayalım */
+.search-bar {
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    margin: 0 auto; /* Yatayda ortalama */
+    display: block; /* Bu özellik, margin: 0 auto'nun çalışmasını sağlar */
+    margin-left: 400px; /* Butonu 20px sağa kaydırır */
+}

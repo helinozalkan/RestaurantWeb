@@ -47,8 +47,8 @@ $result = $conn->query($sql);
 
         <div class="categories">
             <!-- Güncel Stok ve Güncel Sipariş Butonları -->
-            <a href="stocks_page.php" class="category-button">Güncel Stok</a>
-            <a href="orders_page.php" class="category-button">Güncel Sipariş</a>
+            <a href="stocks_page.php" class="category-button">GÜNCEL STOK</a>
+            <a href="orders_page.php" class="category-button">GÜNCEL SİPARİŞ</a>
         </div>
     </div>
 

@@ -50,6 +50,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 40px;
+    flex-direction: column;  /* Butonları alt alta yerleştir */
 }
 
 table {
@@ -61,7 +62,7 @@ table {
 }
 
 table th, table td {
-    text-align: left;
+    text-align: center;
     padding: 15px;
     border: 1px solid #ddd;
 }
@@ -74,6 +75,11 @@ table th {
 
 table td {
     font-size: 16px;
+}
+
+/* Tabloyu orantılı hale getirme */
+table td, table th {
+    width: 25%;  /* Sütun genişliklerini orantılı yap */
 }
 
 table tr:nth-child(even) {
@@ -157,9 +163,43 @@ table .decrease:hover {
     border-collapse: collapse;
     background-color: white;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
 }
 
+/* Teslim Et butonu için stil */
+.delivered-button {
+    background-color: #28a745;  /* Yeşil arka plan rengi */
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;  /* Butonun köşelerini yuvarlatma */
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    width: 200px;  /* Buton genişliği */
+    margin: 5px 0;  /* Butonun üst ve altına boşluk ekleyelim */
+    margin-top: 20px; /* Tablonun altına biraz boşluk ekleyelim */
+}
+
+.delivered-button:hover {
+    background-color: #218838;  /* Hover durumunda buton rengi değişir */
+    transform: translateY(-4px);  /* Hoverda buton hafifçe yükselir */
+}
+
+.delivered-button:active {
+    background-color: #1e7e34;  /* Tıklanırken buton rengi değişir */
+    transform: translateY(2px);  /* Tıklanırken buton hafifçe iner */
+}
+
+/* Butonun çevresinde bir kenarlık (isteğe bağlı) */
+.delivered-button:focus {
+    outline: none;  /* Buton odaklandığında etrafındaki kenarlık kaybolur */
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.5);  /* Buton odaklandığında yeşil renkli kenarlık */
+}
+
+/* Search bar stilini ayarlayalım */
 .search-bar {
     width: 250px;
     padding: 10px;
