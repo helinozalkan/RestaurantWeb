@@ -74,6 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="box">
         <div class="container">
+
+            <!-- Restoran logosu ekleniyor -->
+            <div class="logo-container">
+                <img src="menu-img/restaurant-logo.png" alt="Restoran Logo" class="logo">
+            </div>
             <!-- Kullanıcıyı kayıt sayfasına yönlendiren buton -->
             <div class="top">
                 <button class="account-button" onclick="window.location.href='register.php'">
