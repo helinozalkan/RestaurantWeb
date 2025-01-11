@@ -302,3 +302,5 @@ BEGIN
     SELECT name, service_area, contact_info FROM suppliers;
 END //
 DELIMITER ;
+
+

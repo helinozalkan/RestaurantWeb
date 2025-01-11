@@ -1,5 +1,5 @@
 <?php
-include 'db_connect.php'; // Veritabanı bağlantısı
+include 'db_connect.php';
 session_start();
 
 // Kategori ID kontrolü
@@ -7,10 +7,52 @@ $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
 // Menü sorgusu
 $sql = $category_id 
-    ? "SELECT menu_id, dish_name, description, price, image FROM Menu WHERE category_id = $category_id"
+    ? "SELECT menu_id, dish_name, description, price, image FROM Menu WHERE category_id = ?"
     : "SELECT menu_id, dish_name, description, price, image FROM Menu";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+if ($category_id) $stmt->bind_param('i', $category_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Sipariş veritabanı işlemi
+if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
+    $orderItems = $_POST['order'];
+    $userId = $_SESSION['customer_id'];
+    $totalPrice = 0;
+
+    // Siparişi veritabanına ekleyelim
+    $conn->begin_transaction();
+    try {
+        // Siparişi ekleyelim
+        $stmt = $conn->prepare("INSERT INTO Orders (customer_id, total_price) VALUES (?, ?)");
+        $stmt->bind_param('id', $userId, $totalPrice);
+        $stmt->execute();
+        $orderId = $stmt->insert_id;
+
+        // Sipariş ürünlerini ekleyelim
+        foreach ($orderItems as $item) {
+            $stmt = $conn->prepare("INSERT INTO Order_Items (order_id, menu_id, quantity, price) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param('iiid', $orderId, $item['id'], $item['quantity'], $item['price']);
+            $stmt->execute();
+            $totalPrice += $item['quantity'] * $item['price'];
+        }
+
+        // Toplam fiyatı güncelleyelim
+        $stmt = $conn->prepare("UPDATE Orders SET total_price = ? WHERE order_id = ?");
+        $stmt->bind_param('di', $totalPrice, $orderId);
+        $stmt->execute();
+
+        // İşlemi başarılı şekilde sonlandıralım
+        $conn->commit();
+
+        echo json_encode(['status' => 'success', 'message' => 'Siparişiniz başarıyla alınmıştır!']);
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo json_encode(['status' => 'error', 'message' => 'Sipariş alınırken bir hata oluştu.']);
+    }
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +61,10 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menü</title>
-    <link rel="stylesheet" href="restaurant.css"> 
+    <link rel="stylesheet" href="restaurant.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <!-- Üst Menü -->
     <div class="top-bar">
         <div class="logo-area">
             <img src="menu-img/logo.png" alt="Logo" class="logo">
@@ -37,7 +78,6 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Restaurant Menü</h2>
         <ul>
@@ -49,22 +89,24 @@ $result = $conn->query($sql);
         </ul>
     </div>
 
-    <!-- Menü ve Sepet -->
     <div class="main-content">
         <div class="menu-container" id="menu-container">
             <?php if ($result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
                     <div class="menu-item">
-                        <img src="menu-img/<?php echo $row['image']; ?>" alt="<?php echo $row['dish_name']; ?>" class="menu-img">
+                        <img src="menu-img/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['dish_name']); ?>" class="menu-img">
                         <div class="item-info">
-                            <h3><?php echo $row['dish_name']; ?></h3>
-                            <p><?php echo $row['description']; ?></p>
-                            <p><strong>Fiyat:</strong> <?php echo $row['price']; ?> TL</p>
+                            <h3><?php echo htmlspecialchars($row['dish_name']); ?></h3>
+                            <p><?php echo htmlspecialchars($row['description']); ?></p>
+                            <p><strong>Fiyat:</strong> <?php echo htmlspecialchars($row['price']); ?> TL</p>
                             <div class="cart-controls">
                                 <button class="decrease">−</button>
                                 <span class="quantity">1</span>
                                 <button class="increase">+</button>
-                                <button class="add-to-cart" data-id="<?php echo $row['menu_id']; ?>" data-name="<?php echo $row['dish_name']; ?>" data-price="<?php echo $row['price']; ?>">Sepete Ekle</button>
+                                <button class="add-to-cart" 
+                                    data-id="<?php echo htmlspecialchars($row['menu_id']); ?>" 
+                                    data-name="<?php echo htmlspecialchars($row['dish_name']); ?>" 
+                                    data-price="<?php echo htmlspecialchars($row['price']); ?>">Sepete Ekle</button>
                             </div>
                         </div>
                     </div>
@@ -73,6 +115,7 @@ $result = $conn->query($sql);
                 <p>Bu kategoride henüz yemek bulunmamaktadır.</p>
             <?php endif; ?>
         </div>
+
         <div class="cart-container">
             <h2>Sepetiniz</h2>
             <ul id="cart-items"></ul>
@@ -85,21 +128,18 @@ $result = $conn->query($sql);
         let cart = [];
 
         $(document).ready(function () {
-            // Miktar artırma
             $('.increase').click(function () {
                 const quantityElement = $(this).siblings('.quantity');
                 let quantity = parseInt(quantityElement.text());
                 quantityElement.text(++quantity);
             });
 
-            // Miktar azaltma
             $('.decrease').click(function () {
                 const quantityElement = $(this).siblings('.quantity');
                 let quantity = parseInt(quantityElement.text());
                 if (quantity > 1) quantityElement.text(--quantity);
             });
 
-            // Sepete ekle butonuna tıklama
             $('.add-to-cart').click(function () {
                 const id = $(this).data('id');
                 const name = $(this).data('name');
@@ -108,70 +148,77 @@ $result = $conn->query($sql);
 
                 const item = cart.find(i => i.id === id);
                 if (item) {
-                    item.quantity += quantity; // Aynı üründen eklenirse miktarı artır
+                    item.quantity += quantity;
                 } else {
-                    cart.push({ id, name, price, quantity }); // Yeni ürün ekle
+                    cart.push({ id, name, price, quantity });
                 }
-                updateCart(); // Sepeti güncelle
+                updateCart();
             });
 
-            // Sepet güncelleme fonksiyonu
             function updateCart() {
                 let total = 0;
                 $('#cart-items').empty();
                 cart.forEach(item => {
                     total += item.price * item.quantity;
                     $('#cart-items').append(
-                        `<li>
-                            ${item.name} x${item.quantity} - ${item.price * item.quantity} TL
-                            <button class="remove-item" data-id="${item.id}">Sil</button>
-                        </li>`
+                        `<li>${item.name} x${item.quantity} - ${item.price * item.quantity} TL
+                        <button class="remove-item" data-id="${item.id}">Sil</button></li>`
                     );
                 });
-                $('#total-price').text(total.toFixed(2)); // Toplam fiyatı güncelle
+                $('#total-price').text(total.toFixed(2));
             }
 
-            // Sepet öğesi silme
             $(document).on('click', '.remove-item', function () {
                 const id = $(this).data('id');
-                cart = cart.filter(item => item.id !== id); // Silinen öğeyi sepetten çıkar
-                updateCart(); // Sepeti güncelle
+                cart = cart.filter(item => item.id !== id);
+                updateCart();
             });
-
-            // Siparişi tamamlama
             $('#complete-order').click(function () {
-                if (cart.length === 0) {
-                    alert('Sepetiniz boş!');
-                    return;
+    if (cart.length === 0) {
+        alert("Sepetiniz boş. Lütfen ürün ekleyin.");
+        return;
+    }
+
+    const orderData = {
+        cart: JSON.stringify(cart),
+        total_price: $('#total-price').text()
+    };
+
+    console.log("Sipariş verisi gönderiliyor:", orderData);  // Debugging: Sipariş verisi
+    
+    $.ajax({
+        url: 'complete-order.php',
+        method: 'POST',
+        data: {
+            cart: JSON.stringify(cart),
+            total_price: $('#total-price').text()
+        },
+        contentType: 'application/x-www-form-urlencoded',  // Bu satır eklendi
+        success: function(response) {
+            console.log("Başarıyla sipariş gönderildi:", response);  // Debugging: Başarı durumu
+            try {
+                const result = JSON.parse(response);
+                if (result.status === 'success') {
+                    alert(result.message);
+                    cart = []; // Sepeti sıfırla
+                    updateCart(); // Sepet güncelle
+                } else {
+                    alert("Sipariş sırasında bir hata oluştu.");
                 }
+            } catch (e) {
+                console.log("JSON Hatası: ", e);  // JSON parse hatalarını debug et
+                alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("AJAX Hatası:", status, error);  // Debugging: Hata mesajı
+            alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+        }
+    });
+});
+});
 
-                $.ajax({
-                    url: 'complete_order.php',
-                    method: 'POST',
-                    data: { cart: JSON.stringify(cart) },
-                    success: function (response) {
-                        alert('Siparişiniz başarıyla kaydedildi!');
-                        cart = []; // Sepeti sıfırla
-                        updateCart(); // Sepeti güncelle
-                    },
-                    error: function () {
-                        alert('Sipariş sırasında bir hata oluştu.');
-                    }
-                });
-            });
-
-            // Arama çubuğu
-            $('#search-input').on('keyup', function () {
-                const searchTerm = $(this).val().toLowerCase();
-                $('.menu-item').each(function () {
-                    const dishName = $(this).find('h3').text().toLowerCase();
-                    $(this).toggle(dishName.includes(searchTerm));
-                });
-            });
-        });
 
     </script>
 </body>
 </html>
-
-<?php $conn->close(); ?>
