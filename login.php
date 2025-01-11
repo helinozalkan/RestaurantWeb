@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="container">
             <!-- Kullanıcıyı kayıt sayfasına yönlendiren buton -->
             <div class="top">
-                <button class="account-button" onclick="window.location.href='kayıt1.html'">
+                <button class="account-button" onclick="window.location.href='register.php'">
                     Hesabınız yok mu? Kayıt Ol
                 </button>
                 <header>Şimdi Giriş Yapın</header>
