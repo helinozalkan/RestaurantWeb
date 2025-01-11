@@ -18,7 +18,7 @@ $result = $conn->query($sql);
         <!-- Üst Menü -->
         <div class="top-bar">
             <div class="logo-area">
-                <img src="menu-img/logo.jpg" alt="Restaurant Logo" class="logo">
+                <img src="menu-img/logo.png" alt="Restaurant Logo" class="logo">
                 <h1>Mrs. Kumsal's House</h1>
             </div>
             <div class="search-area">
