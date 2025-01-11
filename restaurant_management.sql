@@ -258,3 +258,47 @@ CREATE TABLE Chefs (
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of when the record was created
 );
+
+
+
+-- all_orders sayfası için gerekli prosedür
+DELIMITER //
+
+CREATE PROCEDURE GetOrderDetails()
+BEGIN
+    SELECT m.dish_name, od.quantity, o.status, o.created_at
+    FROM orders o
+    LEFT JOIN order_details od ON o.order_id = od.order_id
+    LEFT JOIN menu m ON od.menu_id = m.menu_id;
+END //
+
+DELIMITER ;
+
+-- invoices sayfası için gerekli prosedür
+DELIMITER //
+CREATE PROCEDURE GetInvoices()
+BEGIN
+    SELECT m.dish_name, od.quantity, o.total_price, o.status, o.created_at
+    FROM orders o
+    JOIN order_details od ON o.order_id = od.order_id
+    JOIN menu m ON od.menu_id = m.menu_id;
+END //
+DELIMITER ;
+
+-- stocks_status sayfası için gerekli prosedür
+DELIMITER //
+CREATE PROCEDURE GetStockStatus()
+BEGIN
+    SELECT ingredients.name, ingredients.unit, stock.quantity 
+    FROM ingredients 
+    INNER JOIN stock ON ingredients.ingredient_id = stock.ingredient_id;
+END //
+DELIMITER ;
+
+-- suppliers sayfası için gerekli prosedür
+DELIMITER //
+CREATE PROCEDURE GetSuppliers()
+BEGIN
+    SELECT name, service_area, contact_info FROM suppliers;
+END //
+DELIMITER ;

@@ -1,6 +1,6 @@
 <?php
 include 'db_connect.php'; // Veritabanı bağlantısı
-$sql = "SELECT menu_id, dish_name, description, price, image FROM Menu"; // Görsel alanını da ekledim
+$sql = "SELECT menu_id, dish_name, description, price, image FROM Menu";
 $result = $conn->query($sql);
 ?>
 
@@ -25,7 +25,8 @@ $result = $conn->query($sql);
                 <input type="text" placeholder="Search dishes..." class="search-input">
             </div>
             <div class="profile-area">
-                <img src="menu-img/profile.png" alt="Profile" class="profile-img">
+                <img src="menu-img/profile.png" alt="Profile" class="profile-img" onclick="toggleLogoutButton()">
+                <button id="logout-button" onclick="location.href='login.php'" class="logout-button">Çıkış Yap</button>
             </div>
         </div>
 
@@ -36,7 +37,13 @@ $result = $conn->query($sql);
             <button onclick="location.href='invoices.php'" class="panel-button">Faturalar</button>
             <button onclick="location.href='suppliers.php'" class="panel-button">Tedarikçiler</button>
         </div>
-        
     </div>
+
+    <script>
+        function toggleLogoutButton() {
+            const logoutButton = document.getElementById('logout-button');
+            logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
 </body>
 </html>

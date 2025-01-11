@@ -1,10 +1,9 @@
 <?php
 include 'db_connect.php'; // Veritabanı bağlantısı
 
-// SQL sorgusu: Tedarikçi bilgilerini al
-$query = "SELECT name, service_area, contact_info FROM suppliers";
+// Saklı yordamı çağır
+$query = "CALL GetSuppliers()";
 $result = mysqli_query($conn, $query);
-
 ?>
 
 <!DOCTYPE html>

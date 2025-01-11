@@ -252,4 +252,37 @@ footer {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
- 
+ /* Profil Resmi */
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: border 0.3s ease;
+}
+
+.profile-img:hover {
+    border-color: #16a085;
+}
+
+/* Çıkış Yap Butonu */
+.logout-button {
+    display: none;
+    position: absolute;
+    top: 80px; /* Profil resminin altında görünsün */
+    right: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
+}

@@ -2,18 +2,16 @@
 // Veritabanı bağlantısını dahil et
 include 'db_connect.php';  
 
-// SQL sorgusunu yaz
-$query = "SELECT m.dish_name, od.quantity, o.total_price, o.status, o.created_at
-          FROM orders o
-          JOIN order_details od ON o.order_id = od.order_id
-          JOIN menu m ON od.menu_id = m.menu_id";
+// Saklı yordamı çağır
+$query = "CALL GetInvoices()";
 
-// Veritabanından fatura verilerini al
+// Saklı yordamın sonucunu al
 $result = mysqli_query($conn, $query);
 
 // Toplam tutar değişkeni
 $totalAmount = 0;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="tr">

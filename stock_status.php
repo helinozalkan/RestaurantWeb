@@ -2,14 +2,12 @@
 // Veritabanı bağlantısını dahil et
 include 'db_connect.php';
 
-$query = "
-    SELECT ingredients.name, ingredients.unit, stock.quantity 
-    FROM ingredients 
-    INNER JOIN stock ON ingredients.ingredient_id = stock.ingredient_id
-";
+// Saklı yordamı çağır
+$query = "CALL GetStockStatus()";
+
+// Sonuçları al
 $result = mysqli_query($conn, $query);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="tr">

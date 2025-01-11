@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $redirectPage = 'menu.php';
     } elseif ($role === 'chef') {
         $table = 'Chefs';
-        $redirectPage = 'index.php';
+        $redirectPage = 'chef.php';
     } elseif ($role === 'admin') {
         $table = 'Admins';
         $redirectPage = 'executive.php';
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Giriş Yap</title>
 </head>
@@ -109,8 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="two-col">
                     <div class="one">
-                        <input type="checkbox" name="remember" id="check">
-                        <label for="check">Beni Hatırla</label>
                     </div>
                     <div class="two">
                         <label for=""><a href="#">Şifremi Unuttum?</a></label>

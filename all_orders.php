@@ -1,14 +1,10 @@
 <?php
 include 'db_connect.php'; // Veritabanı bağlantısı
 
-// SQL sorgusu: Sipariş bilgilerini al
-$query = "SELECT m.dish_name, od.quantity, o.status, o.created_at
-          FROM orders o
-          LEFT JOIN order_details od ON o.order_id = od.order_id
-          LEFT JOIN menu m ON od.menu_id = m.menu_id";  // Menu tablosunu da ekliyoruz
+// Saklı yordamı çağır
+$query = "CALL GetOrderDetails()";
 $result = mysqli_query($conn, $query);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="tr">
@@ -29,36 +25,34 @@ $result = mysqli_query($conn, $query);
         <!-- İçerik -->
         <div class="table-container">
             <h1>Sipariş Listesi</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Ürün Adı</th>
-                            <th>Adet</th>
-                            <th>Sipariş Durumu</th>
-                            <th>Sipariş Tarihi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if (mysqli_num_rows($result) > 0) {
-                            // Veritabanındaki her sipariş için satır ekle
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                echo "<tr>";
-                                echo "<td>" . $row['dish_name'] . "</td>"; // Ürün adı
-                                echo "<td>" . ($row['quantity'] ? $row['quantity'] : 'NULL') . "</td>"; // Adet
-                                echo "<td>" . $row['status'] . "</td>"; // Sipariş Durumu
-                                echo "<td>" . $row['created_at'] . "</td>"; // Sipariş Tarihi
-                                echo "</tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='4'>Hiç sipariş bulunamadı.</td></tr>";
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ürün Adı</th>
+                        <th>Adet</th>
+                        <th>Sipariş Durumu</th>
+                        <th>Sipariş Tarihi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        // Veritabanındaki her sipariş için satır ekle
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['dish_name'] . "</td>";
+                            echo "<td>" . ($row['quantity'] ? $row['quantity'] : 'NULL') . "</td>";
+                            echo "<td>" . $row['status'] . "</td>";
+                            echo "<td>" . $row['created_at'] . "</td>";
+                            echo "</tr>";
                         }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
+                    } else {
+                        echo "<tr><td colspan='4'>Hiç sipariş bulunamadı.</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
     </div>
-
 </body>
 </html>
