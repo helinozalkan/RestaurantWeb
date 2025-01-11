@@ -25,7 +25,7 @@ $result = $conn->query($sql);
                 <input type="text" placeholder="Search dishes..." class="search-input">
             </div>
             <div class="profile-area">
-                <img src="menu-img/profile.png" alt="Profile" class="profile-img" onclick="toggleLogoutButton()">
+                <img src="menu-img/user-boy-profile.png" alt="Profile" class="profile-img" onclick="toggleLogoutButton()">
                 <button id="logout-button" onclick="location.href='login.php'" class="logout-button">Çıkış Yap</button>
             </div>
         </div>

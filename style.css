@@ -58,7 +58,20 @@ body {
     margin-left: 400px; /* Butonu 20px sağa kaydırır */
 }
 
+.profile-img {
+    width: 40px;
+    height: 40px;
+    margin-left: -150%;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: border 0.3s ease;
+    margin-right: 0px
+}
 
+.profile-img:hover {
+    border-color: #333;
+}
 .categories {
     display: flex;
     justify-content: center;  /* Yatayda ortalama */
