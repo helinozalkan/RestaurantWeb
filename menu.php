@@ -7,8 +7,8 @@ $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
 // Menü sorgusu
 $sql = $category_id 
-    ? "SELECT menu_id, dish_name, description, price, image FROM Menu WHERE category_id = ?"
-    : "SELECT menu_id, dish_name, description, price, image FROM Menu";
+    ? "CALL GetMenuByCategory(?)"
+    : "CALL GetAllMenu()";
 
 $stmt = $conn->prepare($sql);
 if ($category_id) $stmt->bind_param('i', $category_id);
@@ -25,21 +25,21 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     $conn->begin_transaction();
     try {
         // Siparişi ekleyelim
-        $stmt = $conn->prepare("INSERT INTO Orders (customer_id, total_price) VALUES (?, ?)");
+        $stmt = $conn->prepare("CALL AddOrder(?, ?)");
         $stmt->bind_param('id', $userId, $totalPrice);
         $stmt->execute();
         $orderId = $stmt->insert_id;
 
         // Sipariş ürünlerini ekleyelim
         foreach ($orderItems as $item) {
-            $stmt = $conn->prepare("INSERT INTO Order_Items (order_id, menu_id, quantity, price) VALUES (?, ?, ?, ?)");
+            $stmt = $conn->prepare("CALL AddOrderItem(?, ?, ?, ?)");
             $stmt->bind_param('iiid', $orderId, $item['id'], $item['quantity'], $item['price']);
             $stmt->execute();
             $totalPrice += $item['quantity'] * $item['price'];
         }
 
         // Toplam fiyatı güncelleyelim
-        $stmt = $conn->prepare("UPDATE Orders SET total_price = ? WHERE order_id = ?");
+        $stmt = $conn->prepare("CALL UpdateOrderTotalPrice(?, ?)");
         $stmt->bind_param('di', $totalPrice, $orderId);
         $stmt->execute();
 
@@ -126,17 +126,14 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     </div>
 
     <script>
-        // 1) cart adlı değişkeni tanımlayalım.
         let cart = [];
 
         $(document).ready(function () {
-            // 2) Sayfa yenilendiğinde önceden kaydedilmiş sepet varsa localStorage'dan al.
             const storedCart = localStorage.getItem('cart');
             if (storedCart) {
                 cart = JSON.parse(storedCart);
             }
 
-            // Sepet görünümünü başlatır.
             updateCart();
 
             $('.increase').click(function () {
@@ -166,7 +163,6 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                 updateCart();
             });
 
-            // Sepet güncelleme fonksiyonu
             function updateCart() {
                 let total = 0;
                 $('#cart-items').empty();
@@ -182,19 +178,15 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                 });
 
                 $('#total-price').text(total.toFixed(2));
-
-                // **3) Güncel sepeti localStorage'a kaydet.**
                 localStorage.setItem('cart', JSON.stringify(cart));
             }
 
-            // Ürün silme
             $(document).on('click', '.remove-item', function () {
                 const id = $(this).data('id');
                 cart = cart.filter(item => item.id !== id);
                 updateCart();
             });
 
-            // Siparişi Tamamla butonu
             $('#complete-order').click(function () {
                 if (cart.length === 0) {
                     alert("Sepetiniz boş. Lütfen ürün ekleyin.");
@@ -219,10 +211,8 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                             const result = JSON.parse(response);
                             if (result.status === 'success') {
                                 alert(result.message);
-                                cart = []; // Sepeti sıfırla
-                                updateCart(); // Sepeti güncelle
-                                // Dilerseniz localStorage'ı da sıfırlayabilirsiniz:
-                                // localStorage.removeItem('cart');
+                                cart = [];
+                                updateCart();
                             } else {
                                 alert("Sipariş sırasında bir hata oluştu.");
                             }

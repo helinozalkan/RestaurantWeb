@@ -19,31 +19,25 @@ if (empty($orderData)) {
 
 // Sipariş verisini veritabanına ekleme işlemi
 $user_id = $_SESSION['customer_id']; // Kullanıcı ID'si, oturum açmışsa
-$status = 'pending'; // Sipariş durumu (başlangıçta 'pending')
 
 try {
-    // Siparişi ekle (created_at kullanıldı)
-    $orderQuery = "INSERT INTO Orders (customer_id, total_price, status, created_at) VALUES (?, ?, ?, NOW())";
-    $stmt = $conn->prepare($orderQuery);
-    $stmt->bind_param('dss', $user_id, $totalPrice, $status);
+    // Sipariş ekleme saklı yordamını çağır
+    $stmt = $conn->prepare("CALL AddOrder(?, ?, @order_id)");
+    $stmt->bind_param('id', $user_id, $totalPrice);
+    $stmt->execute();
 
-    if (!$stmt->execute()) {
-        throw new Exception('Sipariş eklenirken hata oluştu: ' . $stmt->error);
-    }
-
-    // Yeni siparişin ID'sini al
-    $orderId = $stmt->insert_id;
+    // Yeni siparişin ID'sini almak için çıktı parametresini al
+    $stmt = $conn->prepare("SELECT @order_id AS order_id");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $orderId = $row['order_id'];
 
     // Siparişteki her bir öğeyi ekle
-    $orderItemQuery = "INSERT INTO Order_Items (order_id, menu_id, quantity, price) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($orderItemQuery);
-
+    $stmt = $conn->prepare("CALL AddOrderItem(?, ?, ?, ?)");
     foreach ($orderData as $item) {
         $stmt->bind_param('iiid', $orderId, $item['id'], $item['quantity'], $item['price']);
-
-        if (!$stmt->execute()) {
-            throw new Exception('Ürün eklenirken hata oluştu: ' . $stmt->error);
-        }
+        $stmt->execute();
     }
 
     echo json_encode(['status' => 'success', 'message' => 'Sipariş başarıyla verildi!']);

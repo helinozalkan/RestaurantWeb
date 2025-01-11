@@ -322,20 +322,79 @@ END //
 
 DELIMITER ;
 
--- menu sayfası için prosedür
+-- menu sayfası için Menü Verilerini Çekme prosedür
 DELIMITER $$
 
-CREATE PROCEDURE GetMenuByCategory(IN category_id INT)
+CREATE PROCEDURE getMenuItems(IN category_id INT)
 BEGIN
-    IF category_id IS NULL THEN
-        SELECT menu_id, dish_name, description, price, image 
-        FROM Menu;
-    ELSE
+    IF category_id IS NOT NULL THEN
         SELECT menu_id, dish_name, description, price, image 
         FROM Menu 
         WHERE category_id = category_id;
+    ELSE
+        SELECT menu_id, dish_name, description, price, image 
+        FROM Menu;
     END IF;
 END $$
 
 DELIMITER ;
 
+-- Sipariş Veritabanı İşlemi (INSERT Sorguları): siparişi ekler
+DELIMITER $$
+
+CREATE PROCEDURE insertOrder(IN customer_id INT, IN total_price DECIMAL(10,2), OUT order_id INT)
+BEGIN
+    INSERT INTO Orders (customer_id, total_price) VALUES (customer_id, total_price);
+    SET order_id = LAST_INSERT_ID();
+END $$
+
+DELIMITER ;
+
+-- sipariş öğelerini 
+DELIMITER $$
+
+CREATE PROCEDURE insertOrderItem(IN order_id INT, IN menu_id INT, IN quantity INT, IN price DECIMAL(10,2))
+BEGIN
+    INSERT INTO Order_Items (order_id, menu_id, quantity, price) 
+    VALUES (order_id, menu_id, quantity, price);
+END $$
+
+DELIMITER ;
+
+
+--
+DELIMITER $$
+
+CREATE PROCEDURE GetMenuByCategory(IN category_id INT)
+BEGIN
+    SELECT menu_id, dish_name, description, price, image
+    FROM Menu
+    WHERE category_id = category_id;
+END $$
+
+CREATE PROCEDURE GetAllMenu()
+BEGIN
+    SELECT menu_id, dish_name, description, price, image
+    FROM Menu;
+END $$
+
+CREATE PROCEDURE AddOrder(IN customer_id INT, IN total_price DECIMAL(10,2))
+BEGIN
+    INSERT INTO Orders (customer_id, total_price)
+    VALUES (customer_id, total_price);
+END $$
+
+CREATE PROCEDURE AddOrderItem(IN order_id INT, IN menu_id INT, IN quantity INT, IN price DECIMAL(10,2))
+BEGIN
+    INSERT INTO Order_Items (order_id, menu_id, quantity, price)
+    VALUES (order_id, menu_id, quantity, price);
+END $$
+
+CREATE PROCEDURE UpdateOrderTotalPrice(IN total_price DECIMAL(10,2), IN order_id INT)
+BEGIN
+    UPDATE Orders
+    SET total_price = total_price
+    WHERE order_id = order_id;
+END $$
+
+DELIMITER ;
