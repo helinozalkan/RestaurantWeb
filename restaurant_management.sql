@@ -246,3 +246,15 @@ UPDATE Suppliers SET service_area = 'Sebze' WHERE name = 'Tedarikçi B';
 -- sipariş durumu için 3 seçenek eklenmesi
 ALTER TABLE orders MODIFY COLUMN status ENUM('Pending', 'Preparing', 'Prepared') DEFAULT 'Pending'; 
 
+
+
+-- Adding a Chefs Table
+CREATE TABLE Chefs (
+    chef_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique identifier for each chef
+    name VARCHAR(100) NOT NULL, -- Chef's name
+    experience_years INT CHECK (experience_years >= 0), -- Years of experience, must be 0 or more
+    specialty VARCHAR(100) NOT NULL, -- Chef's specialty area
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of when the record was created
+);

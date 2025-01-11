@@ -2,10 +2,14 @@
 // Veritabanı bağlantısını dahil et
 include 'db_connect.php';
 
-// ingredients tablosundan verileri al
-$query = "SELECT name, unit, price_per_unit FROM ingredients";
+$query = "
+    SELECT ingredients.name, ingredients.unit, stock.quantity 
+    FROM ingredients 
+    INNER JOIN stock ON ingredients.ingredient_id = stock.ingredient_id
+";
 $result = mysqli_query($conn, $query);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="tr">
@@ -41,7 +45,7 @@ $result = mysqli_query($conn, $query);
                             <td><?= $index++ ?></td>
                             <td><?= htmlspecialchars($row['name']) ?></td>
                             <td><?= htmlspecialchars($row['unit']) ?></td>
-                            <td><?= htmlspecialchars($row['price_per_unit']) ?></td>
+                            <td><?= htmlspecialchars($row['quantity']) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
