@@ -132,6 +132,22 @@ INSERT INTO Suppliers (name, contact_info) VALUES
 ('Tedarikçi A', '05321234567, İstanbul'),
 ('Tedarikçi B', '05443334444, Ankara');
 
+
+-- Extra Suppliers
+INSERT INTO Suppliers (name, contact_info) VALUES
+('Tedarikçi A', '05321234567, İstanbul'),
+('Tedarikçi B', '05443334444, Ankara'),
+('Tedarikçi C', '05556667788, İzmir'),
+('Tedarikçi D', '05071234567, Bursa'),
+('Tedarikçi E', '05334445566, Adana'),
+('Tedarikçi F', '05447778899, Antalya'),
+('Tedarikçi G', '05051231234, Trabzon'),
+('Tedarikçi H', '05664443322, Kayseri'),
+('Tedarikçi I', '05378889900, Diyarbakır'),
+('Tedarikçi J', '05223334444, Samsun'),
+('Tedarikçi K', '05056667788, Gaziantep'),
+('Tedarikçi L', '05445553322, Eskişehir');
+
 --kategori belirleme
 UPDATE Menu 
 SET category_id = (SELECT category_id FROM Categories WHERE name = 'Burger') 
