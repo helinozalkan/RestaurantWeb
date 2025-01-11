@@ -342,7 +342,7 @@ h1, h2 {
 
 /* Sepete Ekle Butonları */
 .add-to-cart {
-    background-color: #27ae60;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -353,12 +353,12 @@ h1, h2 {
 }
 
 .add-to-cart:hover {
-    background-color: #2ecc71;
+    background-color: #2500ca;
 }
 
 /* Siparişi Tamamla Butonu */
 #complete-order {
-    background-color: #28a745; /* Yeşil arka plan */
+    background-color: #007bff; /* Yeşil arka plan */
     color: white; /* Beyaz yazı rengi */
     border: none; /* Kenarları yok et */
     padding: 12px 20px; /* İçerik etrafında boşluk */
@@ -370,7 +370,7 @@ h1, h2 {
 }
 
 #complete-order:hover {
-    background-color: #218838; /* Hover durumunda arka plan rengini değiştir */
+    background-color: #2500ca; /* Hover durumunda arka plan rengini değiştir */
     transform: scale(1.05); /* Butonu biraz büyüt */
 }
 
@@ -391,6 +391,27 @@ h1, h2 {
     border: 1px solid #b93131;  /* Sınır ekler */
     overflow-x: hidden; /* Yatay kaydırmayı devre dışı bırakır */
     padding: 10px;           /* İçerik ile sınır arasına boşluk ekler */
+}
+
+/* Çıkış Yap Butonu */
+.logout-button {
+    display: none;
+    position: absolute;
+    top: 70px; /* Profil resminin altında görünsün */
+    right: 62px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: #cf1d1d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
 }
 
 

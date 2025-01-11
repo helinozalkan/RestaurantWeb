@@ -88,3 +88,31 @@ label a{
     text-decoration: none;
     color: #fff;
 }
+
+.account-button {
+    background-color: #3498db; /* Butonun başlangıç rengi */
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px; /* Yuvarlatılmış köşeler */
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    transition: all 0.3s ease; /* Geçiş efekti */
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* Hafif gölge */
+}
+
+.account-button:hover {
+    background-color: #2980b9; /* Hover durumunda renk değişimi */
+    transform: scale(1.05); /* Hover ile butonun büyümesi */
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.5); /* Hoverda daha belirgin gölge */
+}
+
+.account-button:active {
+    background-color: #1c6ea4; /* Butona tıklanıldığında renk değişimi */
+    transform: scale(1); /* Tıklanırken büyüme efekti kaybolur */
+}
+

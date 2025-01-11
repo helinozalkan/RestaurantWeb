@@ -15,6 +15,10 @@ body {
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
+    background-image: url('menu-img/arkaPlan.png'); /* Görselin yolu */
+    background-size: cover; /* Görselin ekranı tamamen kaplamasını sağlar */
+    background-position: center; /* Görselin merkezde konumlanmasını sağlar */
+    background-attachment: fixed; /* Görselin sayfa kaydırıldığında sabit kalmasını sağlar */
     align-items: center;
     min-height: 100vh;
 }
