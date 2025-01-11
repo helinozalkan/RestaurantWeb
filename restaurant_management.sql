@@ -243,3 +243,6 @@ UPDATE Suppliers SET service_area = 'Bakliyat' WHERE name = 'Tedarikçi A';
 UPDATE Suppliers SET service_area = 'Sebze' WHERE name = 'Tedarikçi B';
 
 
+-- sipariş durumu için 3 seçenek eklenmesi
+ALTER TABLE orders MODIFY COLUMN status ENUM('Pending', 'Preparing', 'Prepared') DEFAULT 'Pending'; 
+
