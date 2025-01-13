@@ -147,9 +147,14 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 20px;
-    margin-left: 270px; /* Sidebar genişliğiyle hizalanmış */
+    padding: 20px 100px; /* Üst boşluğu azaltmak için padding küçültüldü */
+    margin-left: 210px;
+    margin-right: 210px;
+    margin-top: 10px !important;
+    position: relative;
+    top: 0%; /* Menüyü yukarı taşıma için ayar */
 }
+
 
 .main-content {
     display: flex;
