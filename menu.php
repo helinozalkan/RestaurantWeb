@@ -5,13 +5,14 @@ session_start();
 // Kategori ID kontrolü
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
-// Menü sorgusu
-$sql = $category_id 
-    ? "CALL GetMenuByCategory(?)"
-    : "CALL GetAllMenu()";
+// Menü sorgusu için prosedür çağrısı
+if ($category_id) {
+    $stmt = $conn->prepare("CALL GetMenuByCategory(?)");
+    $stmt->bind_param('i', $category_id);
+} else {
+    $stmt = $conn->prepare("CALL GetMenuByCategory(NULL)"); // NULL yerine kullanılabilir
+}
 
-$stmt = $conn->prepare($sql);
-if ($category_id) $stmt->bind_param('i', $category_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -25,21 +26,21 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     $conn->begin_transaction();
     try {
         // Siparişi ekleyelim
-        $stmt = $conn->prepare("CALL AddOrder(?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Orders (customer_id, total_price) VALUES (?, ?)");
         $stmt->bind_param('id', $userId, $totalPrice);
         $stmt->execute();
         $orderId = $stmt->insert_id;
 
         // Sipariş ürünlerini ekleyelim
         foreach ($orderItems as $item) {
-            $stmt = $conn->prepare("CALL AddOrderItem(?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO Order_Items (order_id, menu_id, quantity, price) VALUES (?, ?, ?, ?)");
             $stmt->bind_param('iiid', $orderId, $item['id'], $item['quantity'], $item['price']);
             $stmt->execute();
             $totalPrice += $item['quantity'] * $item['price'];
         }
 
         // Toplam fiyatı güncelleyelim
-        $stmt = $conn->prepare("CALL UpdateOrderTotalPrice(?, ?)");
+        $stmt = $conn->prepare("UPDATE Orders SET total_price = ? WHERE order_id = ?");
         $stmt->bind_param('di', $totalPrice, $orderId);
         $stmt->execute();
 
@@ -54,6 +55,7 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="tr">
