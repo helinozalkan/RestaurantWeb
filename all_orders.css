@@ -38,43 +38,37 @@ body {
 /* İçerik */
 .content {
     margin: 50px auto;
-    width: 80%; /* İçeriği ekranın %80'ine yerleştir */
+    width: 95%; /* İçeriği ekranın %95'ine yerleştir (enine genişletmek için) */
     text-align: center;
 }
 
 /* Sipariş Tablosu */
 .table-container {
     text-align: center;
-    width: 80%;
-    max-width: 900px;
+    width: 1100px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     border-radius: 8px;
-    margin-top: -110px; /* Yukarı doğru taşı */
-    /* Ortalamak için eklenen stiller */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-top: 50px; /* Yukarıdan biraz boşluk bırak */
+    position: relative; /* Tabloyu doğru konumlandırmak için */
 }
 
+/* Tablo Başlığı */
 .table-container h1 {
     margin: 0 0 20px; /* Üst ve alt boşlukları ayarladık */
     font-size: 24px;
     color: #333;
 }
 
-
+/* Tablo Stil */
 table {
-    width: 100%; /* Tablo genişliğini artırdık */
-    max-width: 900px; /* Maksimum genişlik sınırını artırdık */
+    width: 100%; /* Tabloyu konteynerin genişliğine uyumlu hale getirdik */
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
     overflow: hidden;
-    margin: 0 auto; /* Ortada kalmasını sağladık */
+    margin: 0 auto;
 }
 
 table th, table td {

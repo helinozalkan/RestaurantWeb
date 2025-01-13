@@ -38,29 +38,37 @@ body {
 /* Tablo Konteyner */
 .table-container {
     width: 90%;
-    max-width: 900px; /* Maksimum genişlik sınırını ayarladık */
+    max-width: 1000px; /* Maksimum genişlik sınırını daha da genişlettik */
     background-color: white;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
     border-radius: 8px;
     text-align: center;
-    margin-top: 50px; /* Yukarıdan mesafe bırak */
+    margin-top: 60px; /* Daha fazla mesafe bıraktık */
 }
 
+/* Tablo Başlığı - Sabit Konum */
 .invoice-container h1 {
-    margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
     font-size: 24px;
     color: #333;
-    padding-bottom: 10px; /* Başlık ile tablonun ayrılmasını sağladık */
-    border-bottom: 2px solid #ddd; /* Başlığı görsel olarak ayırmak için bir alt çizgi ekledik */
+    margin: 0;
+    text-align: center;
+    z-index: 999; /* Başlık diğer içeriklerin üzerinde görünsün */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid #ddd;
 }
 
 /* Tablo */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 100px 0 20px 0; /* Başlık sabit kaldığı için tabloyu biraz aşağıya kaydırıyoruz */
 }
 
 table th, table td {
