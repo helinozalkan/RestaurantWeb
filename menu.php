@@ -5,42 +5,43 @@ session_start();
 // Kategori ID kontrolü
 $category_id = isset($_GET['category']) ? intval($_GET['category']) : null;
 
-// Menü sorgusu için prosedür çağrısı
-if ($category_id) {
-    $stmt = $conn->prepare("CALL GetMenuByCategory(?)");
-    $stmt->bind_param('i', $category_id);
-} else {
-    $stmt = $conn->prepare("CALL GetMenuByCategory(NULL)"); // NULL yerine kullanılabilir
-}
+// Menü sorgusu
+$sql = $category_id 
+    ? "CALL GetMenuByCategory(?)"
+    : "CALL GetAllMenu()";
 
+$stmt = $conn->prepare($sql);
+if ($category_id) {
+    $stmt->bind_param('i', $category_id); // category_id parametresini doğru şekilde bağla
+}
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Sipariş veritabanı işlemi
 if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     $orderItems = $_POST['order'];
-    $userId = $_SESSION['customer_id'];
+    $customer_id = $_SESSION['customer_id'];
     $totalPrice = 0;
 
     // Siparişi veritabanına ekleyelim
     $conn->begin_transaction();
     try {
         // Siparişi ekleyelim
-        $stmt = $conn->prepare("INSERT INTO Orders (customer_id, total_price) VALUES (?, ?)");
-        $stmt->bind_param('id', $userId, $totalPrice);
+        $stmt = $conn->prepare("CALL AddOrder(?, ?)");
+        $stmt->bind_param('id', $customer_id, $totalPrice);
         $stmt->execute();
         $orderId = $stmt->insert_id;
 
         // Sipariş ürünlerini ekleyelim
         foreach ($orderItems as $item) {
-            $stmt = $conn->prepare("INSERT INTO Order_Items (order_id, menu_id, quantity, price) VALUES (?, ?, ?, ?)");
+            $stmt = $conn->prepare("CALL AddOrderItem(?, ?, ?, ?)");
             $stmt->bind_param('iiid', $orderId, $item['id'], $item['quantity'], $item['price']);
             $stmt->execute();
             $totalPrice += $item['quantity'] * $item['price'];
         }
 
         // Toplam fiyatı güncelleyelim
-        $stmt = $conn->prepare("UPDATE Orders SET total_price = ? WHERE order_id = ?");
+        $stmt = $conn->prepare("CALL UpdateOrderTotalPrice(?, ?)");
         $stmt->bind_param('di', $totalPrice, $orderId);
         $stmt->execute();
 
@@ -55,7 +56,6 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     exit;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="tr">
@@ -209,6 +209,7 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                     },
                     contentType: 'application/x-www-form-urlencoded',
                     success: function(response) {
+                        console.log("AJAX Yanıtı:", response); // Yanıtı tarayıcı konsolunda yazdırıyoruz
                         try {
                             const result = JSON.parse(response);
                             if (result.status === 'success') {
@@ -223,6 +224,7 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                             alert("Bir hata oluştu. Lütfen tekrar deneyin.");
                         }
                     },
+
                     error: function(xhr, status, error) {
                         console.log("AJAX Hatası:", status, error);
                         alert("Bir hata oluştu. Lütfen tekrar deneyin.");
@@ -230,11 +232,16 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                 });
             });
         });
-
-        function toggleLogoutButton() {
-            const logoutButton = document.getElementById('logout-button');
-            logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
-        }
     </script>
 </body>
 </html>
+<script>
+    <?php
+    // PHP'deki $_SESSION dizisini JSON formatında JavaScript'e aktar
+    if (isset($_SESSION)) {
+        echo "console.log('Session Bilgileri:', " . json_encode($_SESSION) . ");";
+    } else {
+        echo "console.log('Oturum bilgisi mevcut değil.');";
+    }
+    ?>
+</script>

@@ -18,12 +18,15 @@ if (empty($orderData)) {
 }
 
 // Sipariş verisini veritabanına ekleme işlemi
-$user_id = $_SESSION['customer_id']; // Kullanıcı ID'si, oturum açmışsa
+$customer_id = $_SESSION['customer_id']; // Kullanıcı ID'si, oturum açmışsa
+
+// Veritabanı işlemleri için transaction başlatıyoruz
+$conn->begin_transaction();
 
 try {
     // Sipariş ekleme saklı yordamını çağır
     $stmt = $conn->prepare("CALL AddOrder(?, ?, @order_id)");
-    $stmt->bind_param('id', $user_id, $totalPrice);
+    $stmt->bind_param('id', $customer_id, $totalPrice);
     $stmt->execute();
 
     // Yeni siparişin ID'sini almak için çıktı parametresini al
@@ -40,9 +43,13 @@ try {
         $stmt->execute();
     }
 
+    // İşlem başarılıysa commit yap
+    $conn->commit();
+
     echo json_encode(['status' => 'success', 'message' => 'Sipariş başarıyla verildi!']);
 } catch (Exception $e) {
-    // Hata durumunda
+    // Hata durumunda işlem geri alınıyor
+    $conn->rollback();
     echo json_encode(['status' => 'error', 'message' => 'Bir hata oluştu: ' . $e->getMessage()]);
 }
 ?>

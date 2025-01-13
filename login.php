@@ -19,12 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($role === 'customer') {
         $table = 'Customers';
         $redirectPage = 'menu.php';
+        $idColumn = 'customer_id';
     } elseif ($role === 'chef') {
         $table = 'Chefs';
         $redirectPage = 'chef.php';
+        $idColumn = 'chef_id';
     } elseif ($role === 'admin') {
         $table = 'Admins';
         $redirectPage = 'executive.php';
+        $idColumn = 'admin_id';
     } else {
         echo "Geçersiz rol seçimi!";
         exit;
@@ -43,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Şifreyi doğrula
         if ($password === $user['password']) { // Şifre karşılaştırması doğrudan yapılıyor
             // Başarılı giriş, oturum başlat
-            $_SESSION['user_id'] = $user['id']; // Kullanıcı ID'sini oturuma ekle
+            $_SESSION['customer_id'] = $user[$idColumn]; // Kullanıcı ID'sini oturuma ekle
             $_SESSION['username'] = $user['name'];
             $_SESSION['role'] = $role;
 

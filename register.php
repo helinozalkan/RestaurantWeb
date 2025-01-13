@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Veritabanına kayıt işlemi
     $stmt = $conn->prepare("INSERT INTO $table (name, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 
