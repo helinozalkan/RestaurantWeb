@@ -232,6 +232,10 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
                 });
             });
         });
+        function toggleLogoutButton() {
+            const logoutButton = document.getElementById('logout-button');
+            logoutButton.style.display = logoutButton.style.display === 'block' ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>
@@ -243,5 +247,7 @@ if (isset($_POST['order']) && isset($_SESSION['customer_id'])) {
     } else {
         echo "console.log('Oturum bilgisi mevcut değil.');";
     }
+
+    
     ?>
 </script>
